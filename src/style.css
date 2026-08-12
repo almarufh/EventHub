@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@layer base {
+    body > div#root {
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+    }
+}
+
+@theme {
+    /* color */
+    --color-light: #FFFFFFE5;
+    --color-dark: #111111;
+
+    /* bacground */
+    --color-primary: #FF5F22;
+    --color-secondary: #33B570;
+
+    /* Borders */
+    --color-header: #E4E4E7;
+
+    /* Font */
+    --color-font-primary: #52525C;
+
+    /* setup */
+    --spacing: 1px;
+}
+
+@utility my-center {
+    @apply flex items-center justify-center
+}
+
+@utility round-8 {
+    border-radius: 8px;
+    border : solid 0px;
+}
+
+@utility f-14 {
+    font-size: 14px;
+}
+
+@utility f-16 {
+    font-size: 16px;
+}
