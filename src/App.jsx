@@ -8,6 +8,7 @@ import Events from "./pages/Events.jsx";
 import Explore from "./pages/Explore.jsx";
 import Communities from "./pages/Communities.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
+import SuccesPassword from "./pages/auth/SuccesPassword.jsx";
 
 let router = createBrowserRouter([
   {
@@ -42,10 +43,10 @@ let router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to='sigin' replace />
+        element: <Navigate to='signin' replace />
       },
       {
-        path: 'sign',
+        path: 'signin',
         element: <SignIn/>
       },
       {
@@ -55,6 +56,10 @@ let router = createBrowserRouter([
       {
         path: 'password',
         element: <ForgotPasword/>
+      },
+      {
+        path: "success",
+        element: <SuccesPassword/>
       }
     ]
   }
