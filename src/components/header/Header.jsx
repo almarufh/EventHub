@@ -1,80 +1,44 @@
 import { FiBell, FiMoon, FiShield } from "react-icons/fi"
 import { RxDashboard } from "react-icons/rx"
-import { Link } from "react-router"
 import Logo from "./Logo.jsx";
 import actived from "../../utils/actived.js";
 import { useEffect, useState } from "react";
+import CreateNavbar from "./CreateNavbar.jsx";
 
 function Header() {
-  const data = {
-    id: "BC-1786577627428",
-    role: import.meta.env.VITE_ROLE
-  }
-  
   const [user, setUser] = useState({})
   
   useEffect(()=> {
     const isActived = actived()
+
     if (isActived.status) {
       setUser(isActived.data)
-    } else {
-      setUser(data)
+    }
+    else {
+      setUser({
+        id: "BC-1786577627428",
+        role: "guest",
+        isActive: false
+      })
     }
   }, [])
-  
-  function CreateNavbar ({role}) {
-    
-      const listNavbar = [
-        { navbar: "Explore", link: "/explore" },
-        { navbar: "Events", link: "/events" },
-        { navbar: "Communities", link: "/communities" },
-        { navbar: "My Events", link: "/myevents" },
-      ];
 
-      
-      const listNavbarGuest = [
-        { navbar: "Events", link: "#" },
-        { navbar: "Communities", link: "#" }
-      ];
-      
-      const currentNavbar = 
-      user.role === "admin" || user.role === "attendee" || user.role === "organizer"
-      ? listNavbar
-      : listNavbarGuest;
-      
-      return (<nav>
-        <ul className="flex w-full">
-          {currentNavbar.map((n, i) => {
-            return (
-              <li 
-              className="py-6 px-12 text-font-primary font-medium my-center"
-                key={i}
-              >
-                <Link 
-                  className="f-14"
-                  to={n.link}
-                  >{n.navbar}</Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-    );
-  }
+  console.log(user)
   
-  function CreateProfile ({role}) {
+  function CreateProfile ({data}) {
+    console.log("data User", data)
     return (
       <div 
       className="flex items-center w-fit h-34 gap-8 justify-end justify-self-end"
       >
-        {role === "admin" ? (
+        { data.role === "admin" ? (
           <div
           className="flex items-center gap-6 round-8 py-6 px-12"
           >
           <FiShield/>
           <span>Admin</span>
         </div>
-        ) : role === "organizer" ? (
+        ) : data.role === "organizer" ? (
           <div
           className="flex items-center gap-6 round-8 py-6 px-12 bg-[#FF5F2214]"
           >
@@ -84,27 +48,41 @@ function Header() {
               >Dashboard</span>
           </div>
         ) : null}
+
         
-        <FiBell />
-        <FiMoon />
-        <div className="border w-32 h-32 rounded-full">
-          <img src="" alt="" />
-        </div>
+        { data.isActive 
+          ? (<FiBell className="text-gray-700 text-lg" />)
+          : (<span className="text-xs text-font-secondary">Browsing as guest</span>)
+        }
+
+        <FiMoon className="text-gray-700 text-lg" />
+        
+
+        { data.isActive ? (
+          <div className="border border-dark w-32 h-32 rounded-full">
+            <img src="" alt="" />
+          </div>
+        ) : (
+          <button
+            className="f-14 font-semibold px-16 py-6 bg-primary rounded-lg"
+          >Sign In</button>
+        )}
+
       </div>
     )
   }
   
   return (
     <header
-    className='px-24 gap-8 max-w-1338 h-56 flex items-center border-b border-border-header justify-between bg-light'
+      className='px-24 gap-8 w-full py-24 flex items-center border-b border-border-header justify-between bg-light text-light'
     >
       <div 
         className="flex "
         >
         <Logo/>
-        <CreateNavbar role={user.role}/>
+        <CreateNavbar user={user}/>
       </div>
-      <CreateProfile role={user.role}/>
+      <CreateProfile data={user}/>
     </header>
   )
 }
