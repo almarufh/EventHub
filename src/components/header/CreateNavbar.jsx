@@ -1,7 +1,7 @@
 import { Link } from "react-router"
 
 function CreateNavbar ({user}) {
-  
+  console.log("User2", user)
     const listNavbar = [
       { navbar: "Explore", link: "/explore" },
       { navbar: "Events", link: "/events" },
@@ -28,6 +28,7 @@ function CreateNavbar ({user}) {
               key={i}
             >
               <Link 
+  
                 className="f-14"
                 to={n.link}
                 >{n.navbar}</Link>
