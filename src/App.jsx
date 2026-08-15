@@ -9,6 +9,7 @@ import Explore from "./pages/Explore.jsx";
 import Communities from "./pages/Communities.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
 import SuccesPassword from "./pages/auth/SuccesPassword.jsx";
+import EventsLayout from "./layout/EventsLayout.jsx";
 
 let router = createBrowserRouter([
   {
@@ -21,7 +22,17 @@ let router = createBrowserRouter([
       },
       {
         path: 'events',
-        element: <Events/>
+        element: <EventsLayout/> ,
+        children: [
+          {
+            index: true,
+            element: <Events/>
+          },
+          {
+            path: 'detail',
+            element: <Events/>
+          },
+        ]
       },
       {
         path: 'communities',
