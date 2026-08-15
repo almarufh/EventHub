@@ -20,7 +20,7 @@ function CreateNavbar ({user}) {
     : listNavbarGuest;
     
     return (<nav>
-      <ul className="flex w-full">
+      <ul className="hidden md:flex w-full">
         {currentNavbar.map((n, i) => {
           return (
             <li 
