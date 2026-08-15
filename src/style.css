@@ -12,6 +12,7 @@
     /* color */
     --color-light: #FFFFFFE5;
     --color-dark: #111111;
+    --color-dark-primary: #18181B;
 
     /* bacground */
     --color-primary: #FF5F22;
@@ -27,6 +28,8 @@
     --color-font-secondary: #9F9FA9;
     --color-font-thirty: #D4D4D8;
     --color-font-forthy: #71717B;
+    --color-font-fivethy: #3F3F47;
+    --color-font-error: #FB2C36;
 
 
     /* setup */
@@ -56,4 +59,8 @@
 
 @utility f-11 {
     font-size: 11px;
+}
+
+@utility f-20 {
+    font-size: 20px;
 }
