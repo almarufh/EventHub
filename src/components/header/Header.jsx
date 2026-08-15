@@ -80,7 +80,7 @@ function Header() {
   
   return (
     <header
-      className='px-24 gap-8 w-full py-12 md:py-24 flex items-center border-b border-border-header justify-between bg-light text-light'
+      className='fixed top-0 left-0 z-50 px-24 gap-8 w-full py-12 md:py-24 flex items-center border-b border-border-header justify-between bg-light text-light'
     >
       <div 
         className="flex "
