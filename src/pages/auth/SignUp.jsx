@@ -43,7 +43,7 @@ function SignUp() {
   function saveUser(e) {
     const {status} = userRegister(e)
     if(status) {
-      navigate("/auth/sigin")
+      navigate("/auth/signin")
     }
 
   }
@@ -193,7 +193,7 @@ function SignUp() {
 
           
           <button
-            className='bg-primary py-12 w-full my-center rounded-lg f-14 text-light font-semibold'
+            className='bg-primary py-12 w-full my-center rounded-lg f-14 text-light font-semibold cursor-pointer'
           >Create account</button>
         </form>
 
