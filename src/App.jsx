@@ -1,15 +1,15 @@
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
-import MainLayout from "./pages/MainLayout.jsx";
-import AuthLayout from "./pages/auth/AuthLayout.jsx";
+import MainLayout from "./layout/MainLayout.jsx";
+import AuthLayout from "./layout/AuthLayout.jsx";
 import SignIn from "./pages/auth/SignIn.jsx";
 import SignUp from "./pages/auth/SignUp.jsx";
 import ForgotPasword from "./pages/auth/ForgotPasword.jsx";
-import Events from "./pages/Events.jsx";
 import Explore from "./pages/Explore.jsx";
-import Communities from "./pages/Communities.jsx";
+import Events from "./pages/events/Events.jsx";
+import Communities from "./pages/communities/Communities.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
 import SuccesPassword from "./pages/auth/SuccesPassword.jsx";
-import EventsLayout from "./layout/EventsLayout.jsx";
+import CommunitiesLayout from "./layout/CommunitiesLayout.jsx";
 
 let router = createBrowserRouter([
   {
@@ -21,12 +21,12 @@ let router = createBrowserRouter([
         element: <Navigate to='events' replace />
       },
       {
-        path: 'events',
-        element: <EventsLayout/> ,
+        path: 'communities',
+        element: <CommunitiesLayout/> ,
         children: [
           {
             index: true,
-            element: <Events/>
+            element: <Communities/>
           },
           {
             path: 'detail',
@@ -35,8 +35,18 @@ let router = createBrowserRouter([
         ]
       },
       {
-        path: 'communities',
-        element: <Communities/>
+        path: 'events',
+        element: <Events/>,
+        children: [
+          {
+            index: true,
+            element: <Communities/>
+          },
+          {
+            path: 'detail',
+            element: <Events/>
+          },
+        ]
       },
       {
         path: 'myevents',
