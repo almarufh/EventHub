@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router'
 import { LuEye, LuEyeClosed } from 'react-icons/lu'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
-import { userRegister } from '../../utils/user.js'
+import { userRegister, checkEmailUser } from '../../utils/user.js'
 
 function SignUp() {
   const {register, handleSubmit, formState: { errors }} = useForm()
@@ -41,7 +41,11 @@ function SignUp() {
 
   const navigate = useNavigate()
   function saveUser(e) {
-    userRegister(e)
+    const {status} = userRegister(e)
+    if(status) {
+      navigate("/auth/sigin")
+    }
+
   }
   return (
     <div className='w-full h-screen flex justify-center items-center'>
@@ -101,12 +105,19 @@ function SignUp() {
             >Email address</label>
             <input 
               className='bg-light rounded-lg border border-border-header py-10 px-12 f-14 text-font-secondary outline-none'
-              type="text" 
+              type="email" 
               {...register("email", { 
                 required: "Email is required",
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: "Format email tidak valid"
+                },
+                validate: (value)=>{
+                  const {status, message} = checkEmailUser(value)
+                  // if(user !== undefined){
+                  //   setUser(user)
+                  // }
+                  return !status || message
                 }
               })} 
               id="email" 
