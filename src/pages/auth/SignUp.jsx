@@ -42,7 +42,6 @@ function SignUp() {
   const navigate = useNavigate()
   function saveUser(e) {
     userRegister(e)
-    // navigate("/explore")
   }
   return (
     <div className='w-full h-screen flex justify-center items-center'>
@@ -92,7 +91,7 @@ function SignUp() {
               id="name" 
               placeholder="Alex Kim" 
             />
-            <span className={`transition-opacity duration-200 ${errors.name ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.name?.message}</span>
+            <span className={`transition-opacity duration-200 ${errors.name ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.name?.message || "error"}</span>
           </div>
 
           <div className='flex flex-col gap-6 py-12'>
@@ -116,7 +115,7 @@ function SignUp() {
             <span className={`${errors?.email ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.email?.message || "error"}</span>
           </div>
 
-          <div className='flex flex-col gap-6 pt-12'>
+          <div className='flex flex-col gap-6'>
             <label
               className='f-14 text-font-fivethy'
               htmlFor="password"
@@ -167,7 +166,7 @@ function SignUp() {
           <div className='flex gap-6 pt-12'>
             <input 
               className='bg-light border border-border-header py-10 px-12 f-14 text-font-secondary outline-none'
-              type="radio" 
+              type="checkbox" 
               {...register("accept", {required: "Persetujuan ini harus diaktifkan terlebih dahulu!"})} 
               id="accept" 
             />
