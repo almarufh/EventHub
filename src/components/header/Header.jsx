@@ -1,7 +1,7 @@
 import { FiBell, FiMoon, FiShield } from "react-icons/fi"
 import { RxDashboard } from "react-icons/rx"
 import Logo from "./Logo.jsx";
-import actived from "../../utils/actived.js";
+import actived from "../../utils/helper/actived.js";
 import { useEffect, useState } from "react";
 import CreateNavbar from "./CreateNavbar.jsx";
 import { LuAlignJustify } from "react-icons/lu";
@@ -70,7 +70,7 @@ function Header() {
           <button
             className="hidden md:flex f-14 font-semibold px-16 py-6 bg-primary rounded-lg"
           >Sign In</button>
-          <LuAlignJustify className="text-gray-700 text-lg" />
+          <LuAlignJustify className="flex md:hidden text-gray-700 text-lg" />
           </>
         )}
 
@@ -80,7 +80,7 @@ function Header() {
   
   return (
     <header
-      className='fixed top-0 left-0 z-50 px-24 gap-8 w-full py-12 md:py-24 flex items-center border-b border-border-header justify-between bg-light text-light'
+      className='fixed top-0 left-0 z-50 px-24 gap-8 w-full py-6 md:py-12 flex items-center border-b border-border-header justify-between bg-light text-light'
     >
       <div 
         className="flex "
