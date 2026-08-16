@@ -1,12 +1,12 @@
 import React from 'react'
-import Logo from '../../components/header/Logo.jsx'
+import Logo from '../components/header/Logo.jsx'
 import { Outlet } from 'react-router'
 
 function AuthLayout() {
   return (
     <main className="flex md:grid md:grid-cols-[35%_65%] w-full h-screen">
       <div
-        className='bg-dark hidden md:flex flex-col items-center justify-center w-full gap-16  p-[20%_10%] '
+        className='bg-radial from-orange-900 from-5% to-black hidden md:flex flex-col items-center justify-center w-full gap-16  p-[20%_10%] '
       >
         <div
           className="w-full">
