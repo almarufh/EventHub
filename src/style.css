@@ -10,13 +10,19 @@
 
 @theme {
     /* color */
-    --color-light: #FFFFFFE5;
+    --color-light: #FFFFFF;
     --color-dark: #111111;
     --color-dark-primary: #18181B;
 
     /* bacground */
     --color-primary: #FF5F22;
     --color-secondary: #33B570;
+    --color-thirty: #F4F4F5;
+
+    --color-hijau10: #33B5701A;
+    --color-biru10: #3363FF1A;
+    --color-ungu: #9810FA;
+    --color-ungu-second: ##F3E8FF;
 
     /* Borders */
     --color-border-header: #E4E4E7;
@@ -29,6 +35,7 @@
     --color-font-thirty: #D4D4D8;
     --color-font-forthy: #71717B;
     --color-font-fivethy: #3F3F47;
+    --color-font-sixty: #3363FF;
     --color-font-error: #FB2C36;
 
 
