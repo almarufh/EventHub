@@ -129,7 +129,7 @@ function SignIn() {
             <span className={`${errors?.password ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.password?.message || "error"}</span>
           </div>
           <button
-            className='bg-primary py-12 w-full my-center rounded-lg f-14 text-light font-semibold'
+            className='bg-primary py-12 w-full my-center rounded-lg f-14 text-light font-semibold cursor-pointer'
           >Sign in</button>
         </form>
 
