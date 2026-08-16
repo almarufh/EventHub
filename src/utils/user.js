@@ -1,6 +1,11 @@
 import { load, save } from "./helper/storage.js";
 
 function userLogin(user) {
+    user = {
+        id: user.id,
+        role: user.role,
+        isActive: true
+    }
     save("actived", user)
     return {
         status: true,
