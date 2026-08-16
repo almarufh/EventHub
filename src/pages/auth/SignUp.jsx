@@ -1,10 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Logo from '../../components/header/Logo'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { LuEye, LuEyeClosed } from 'react-icons/lu'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
+import { useForm } from 'react-hook-form'
+import { userRegister } from '../../utils/user.js'
 
 function SignUp() {
+  const {register, handleSubmit, formState: { errors }} = useForm()
+  const [show, setShow] = useState({
+    password: {
+      value: false,
+      type: "password"
+    }, 
+    confirm: {
+      value: false,
+      type: "password"
+    }
+  })
+
+  const confirmShow = () => {
+    setShow((prevState) => ({
+      ...prevState,
+      confirm: {
+        value: !prevState.confirm.value,
+        type: prevState.confirm.value ? "password" : "text"
+      }
+    }));
+  };
+
+  const passwordShow = () => {
+    setShow((prevState) => ({
+      ...prevState,
+      password: {
+        value: !prevState.password.value,
+        type: prevState.password.value ? "password" : "text"
+      }
+    }));
+  };
+
+  const navigate = useNavigate()
+  function saveUser(e) {
+    userRegister(e)
+    // navigate("/explore")
+  }
   return (
     <div className='w-full h-screen flex justify-center items-center'>
       <div className="w-8/10 md:w-6/10">
@@ -37,7 +76,10 @@ function SignUp() {
           <div className="w-full border-t h-0 border-border-header"></div>
         </div>
 
-        <form className='pt-20'>
+        <form 
+          className='pt-20'
+          onSubmit={handleSubmit(saveUser)}
+        >
           <div className='flex flex-col gap-6'>
             <label 
               className='f-14 text-font-fivethy' 
@@ -46,11 +88,11 @@ function SignUp() {
             <input 
               className='bg-light rounded-lg border border-border-header py-10 px-12 f-14 text-font-secondary outline-none'
               type="text" 
-              name="name" 
+              {...register("name", { required: "Full name is required" })} 
               id="name" 
               placeholder="Alex Kim" 
             />
-            <span className='text-font-error text-xs'>Email is required</span>
+            <span className={`transition-opacity duration-200 ${errors.name ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.name?.message}</span>
           </div>
 
           <div className='flex flex-col gap-6 py-12'>
@@ -61,11 +103,17 @@ function SignUp() {
             <input 
               className='bg-light rounded-lg border border-border-header py-10 px-12 f-14 text-font-secondary outline-none'
               type="text" 
-              name="email" 
+              {...register("email", { 
+                required: "Email is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Format email tidak valid"
+                }
+              })} 
               id="email" 
               placeholder="alex@example.com" 
             />
-            <span className='text-font-error text-xs'>Email is required</span>
+            <span className={`${errors?.email ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.email?.message || "error"}</span>
           </div>
 
           <div className='flex flex-col gap-6 pt-12'>
@@ -76,14 +124,20 @@ function SignUp() {
             <div className="flex border rounded-lg px-12 border-border-header items-center justify-between">
               <input
                 className='bg-light py-10 f-14 text-font-secondary w-full outline-none'
-                type="password"
-                name="password"
+                type={show.password.type}
+                {...register("password", {required: "Password is required", minLength:{
+                  value: 8,
+                  message: "Password minimal 8 karakter"
+                }})}
                 id="password"
                 placeholder="At least 8 characters"
               />
-              {false ? (<LuEye/>) : (<LuEyeClosed/>)}
+              <div 
+                onClick={passwordShow}
+                className='cursor-pointer'
+              >{show.password.value ? (<LuEye/>) : (<LuEyeClosed/>)}</div>
             </div>
-            <span className='text-font-error text-xs'>Password is required</span>
+            <span className={`${errors?.password ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.password?.message || "error"}</span>
           </div>
 
           <div className='flex flex-col gap-6 pt-12'>
@@ -94,29 +148,39 @@ function SignUp() {
             <div className="flex border rounded-lg px-12 border-border-header items-center justify-between">
               <input
                 className='bg-light py-10 f-14 text-font-secondary w-full outline-none'
-                type="password"
-                name="confirm"
+                type={show.confirm.type}
+                {...register("confirm", {
+                  required: "please confirm your passsword",
+                  validate: (value, formValues) => value === formValues.password || "Password do not match"
+                })}
                 id="confirm"
                 placeholder="Re-enter your password"
               />
-              {false ? (<LuEye/>) : (<LuEyeClosed/>)}
+              <div 
+                onClick={confirmShow}
+                className='cursor-pointer'
+              >{show.confirm.value ? (<LuEye/>) : (<LuEyeClosed/>)}</div>
             </div>
-            <span className='text-font-error text-xs'>Password is required</span>
+            <span className={`${errors?.confirm ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.confirm?.message || "error"}</span>
           </div>
 
-          <div className='flex gap-6 py-12'>
+          <div className='flex gap-6 pt-12'>
             <input 
               className='bg-light border border-border-header py-10 px-12 f-14 text-font-secondary outline-none'
               type="radio" 
-              name="name" 
-              id="name" 
-              placeholder="Alex Kim" 
+              {...register("accept", {required: "Persetujuan ini harus diaktifkan terlebih dahulu!"})} 
+              id="accept" 
             />
             <label 
-              className='text-xs text-font-forthy' 
-              htmlFor="name"
+              className='text-xs text-font-forthy cursor-pointer' 
+              htmlFor="accept"
             >I agree to the <span className="text-xs text-primary">Terms of Service</span> and Privacy <span className="text-xs text-primary">Policy</span></label>
           </div>
+          
+          <div className="pb-12">
+            <span className={`${errors?.accept ? "opacity-100" : "opacity-0"} text-font-error text-xs pb-12`}>{errors.accept?.message || "error"}</span>
+          </div>
+
           
           <button
             className='bg-primary py-12 w-full my-center rounded-lg f-14 text-light font-semibold'
