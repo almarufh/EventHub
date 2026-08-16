@@ -10,6 +10,7 @@ function CreateNavbar ({user}) {
     ];
     
     const listNavbarGuest = [
+      { navbar: "Explore", link: "/explore" },
       { navbar: "Events", link: "/events" },
       { navbar: "Communities", link: "/communities" },
     ];
