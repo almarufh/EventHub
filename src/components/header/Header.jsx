@@ -5,9 +5,15 @@ import actived from "../../utils/helper/actived.js";
 import { useEffect, useState } from "react";
 import CreateNavbar from "./CreateNavbar.jsx";
 import { LuAlignJustify } from "react-icons/lu";
+import { GoX } from "react-icons/go";
+import { useNavigate } from "react-router";
+import NavMobile from "./NavMobile.jsx";
 
 function Header() {
   const [user, setUser] = useState({})
+  const [showNav, setShowNav] = useState(false)
+
+  const navigate = useNavigate()
   
   useEffect(()=> {
     const isActived = actived()
@@ -24,10 +30,8 @@ function Header() {
     }
   }, [])
 
-  console.log(user)
-  
+
   function CreateProfile ({data}) {
-    console.log("data User", data)
     return (
       <div 
       className="flex items-center w-fit h-34 gap-8 justify-end justify-self-end"
@@ -62,15 +66,56 @@ function Header() {
         
 
         { data.isActive ? (
-          <div className="border border-dark w-32 h-32 rounded-full">
-            <img src="" alt="" />
+          <>
+          <div 
+            className="hidden md:flex items-center justify-center border border-font-primary w-32 h-32 rounded-full overflow-hidden cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault()
+              setShowNav(!showNav)
+            }}
+          >
+            <img className="object-cover" src="/Dina Rahayu.svg" alt="L" />
           </div>
+          <div
+            onClick={(e)=> {
+              e.preventDefault()
+              setShowNav(!showNav)
+            }}
+            className={`
+                cursor-pointer
+              `}
+          >
+            { showNav ? 
+            (<GoX className={`
+                flex md:hidden text-gray-700 text-lg
+              `} /> 
+            ) :(<LuAlignJustify className="flex md:hidden text-gray-700 text-lg" />)}
+          </div>
+          </>
         ) : (
           <>
           <button
-            className="hidden md:flex f-14 font-semibold px-16 py-6 bg-primary rounded-lg"
+            onClick={(e)=> {
+              e.preventDefault()
+              navigate("/auth/signin")
+            }}
+            className="hidden md:flex f-14 font-semibold px-16 py-6 bg-primary rounded-lg cursor-pointer"
           >Sign In</button>
-          <LuAlignJustify className="flex md:hidden text-gray-700 text-lg" />
+          <div
+            onClick={(e)=> {
+              e.preventDefault()
+              setShowNav(!showNav)
+            }}
+            className={`
+                cursor-pointer
+              `}
+          >
+            { showNav ? 
+            (<GoX className={`
+                flex md:hidden text-gray-700 text-lg
+              `} /> 
+            ) :(<LuAlignJustify className="flex md:hidden text-gray-700 text-lg" />)}
+          </div>
           </>
         )}
 
@@ -88,6 +133,16 @@ function Header() {
         <Logo/>
         <CreateNavbar user={user}/>
       </div>
+      
+      {showNav && <div className={`
+        flex flex-col py-8 bg-light border border-border-header rounded-xl
+        ${false 
+          ? "fixed inset-0 m-auto w-96 h-fit z-50" 
+          : "absolute top-40 md:top-55 right-10 md:right-0 w-fit z-40"
+        }
+        `}>
+          <NavMobile user={user} setUser={setUser} setShowNav={setShowNav} showNav={showNav} />
+      </div>}
       <CreateProfile data={user}/>
     </header>
   )
