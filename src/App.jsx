@@ -10,6 +10,7 @@ import Communities from "./pages/communities/Communities.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
 import SuccesPassword from "./pages/auth/SuccesPassword.jsx";
 import CommunitiesLayout from "./layout/CommunitiesLayout.jsx";
+import CommunitieDetail from "./pages/communities/CommunitieDetail.jsx";
 
 let router = createBrowserRouter([
   {
@@ -29,8 +30,8 @@ let router = createBrowserRouter([
             element: <Communities/>
           },
           {
-            path: 'detail',
-            element: <Events/>
+            path: ':id',
+            element: <CommunitieDetail />
           },
         ]
       },
