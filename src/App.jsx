@@ -13,6 +13,7 @@ import CommunitiesLayout from "./layout/CommunitiesLayout.jsx";
 import CommunitieDetail from "./pages/communities/CommunitieDetail.jsx";
 import EventsCommunities from "./pages/communities/EventsCommunities.jsx";
 import MembersCommunities from "./pages/communities/MembersCommunities.jsx";
+import EventsLayout from "./layout/EventsLayout.jsx";
 
 let router = createBrowserRouter([
   {
@@ -49,11 +50,11 @@ let router = createBrowserRouter([
       },
       {
         path: 'events',
-        element: <Events/>,
+        element: <EventsLayout/>,
         children: [
           {
             index: true,
-            element: <Communities/>
+            element: <Events/>
           },
           {
             path: 'detail',
