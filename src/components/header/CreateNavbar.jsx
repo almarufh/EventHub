@@ -1,7 +1,6 @@
-import { Link } from "react-router"
+import { NavLink } from "react-router"
 
 function CreateNavbar ({user}) {
-  console.log("User2", user)
     const listNavbar = [
       { navbar: "Explore", link: "/explore" },
       { navbar: "Events", link: "/events" },
@@ -21,19 +20,24 @@ function CreateNavbar ({user}) {
     : listNavbarGuest;
     
     return (<nav>
-      <ul className="hidden md:flex w-full">
+      <ul 
+        className={`
+          hidden md:flex w-full
+
+          `}
+      >
         {currentNavbar.map((n, i) => {
           return (
-            <li 
-            className="py-6 px-12 text-font-primary font-medium my-center"
+            <NavLink 
+            className={({isActive}) => ` ${isActive ? "text-primary bg-primary8" : "text-font-primary"}
+              py-6 px-12 text-font-primary font-medium my-center round-8`}
               key={i}
+              to={n.link}
             >
-              <Link 
-  
+              <li 
                 className="f-14"
-                to={n.link}
-                >{n.navbar}</Link>
-            </li>
+                >{n.navbar}</li>
+            </NavLink>
           );
         })}
       </ul>
