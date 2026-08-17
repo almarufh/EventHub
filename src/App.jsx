@@ -14,6 +14,7 @@ import CommunitieDetail from "./pages/communities/CommunitieDetail.jsx";
 import EventsCommunities from "./pages/communities/EventsCommunities.jsx";
 import MembersCommunities from "./pages/communities/MembersCommunities.jsx";
 import EventsLayout from "./layout/EventsLayout.jsx";
+import DiscussionCommunities from "./pages/communities/DiscussionCommunities.jsx";
 
 let router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ let router = createBrowserRouter([
               {
                 path: "members",
                 element: <MembersCommunities/>
+              },
+              {
+                path: "discussion",
+                element: <DiscussionCommunities/>
               }
             ]
           }
