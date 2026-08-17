@@ -22,11 +22,13 @@ function SignIn() {
     }));
   };
 
-  function sign(){
-    const {status} = userLogin(getUser)
+  function sign(e){
+    const {status, user} = userLogin(e.email)
     if(status) {
+      setUser(user)
       navigate("/explore")
     }
+    console.log(getUser)
   }
 
   return (
