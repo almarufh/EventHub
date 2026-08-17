@@ -1,5 +1,4 @@
 export const events = [
-  // --- RECOMMENDED EVENTS ---
   {
     category: "recommended_events",
     id: "rec-1",
