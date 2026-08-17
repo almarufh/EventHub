@@ -7,12 +7,13 @@ import { CiBookmark, CiCalendar } from 'react-icons/ci'
 import { PiMapPinLight } from 'react-icons/pi'
 import { GoPeople } from 'react-icons/go'
 import { FaArrowTrendUp } from 'react-icons/fa6'
+import CategoryEvents from '../components/events/CategoryEvents'
 
 function Explore() {
   return (
     <main className='flex flex-col w-full items-center'>
-      <section className='w-9/10 bg-radial from-orange-900 from-5% to-black justify-center items-center flex pb-64 px-16'>
-        <div className="flex flex-col pt-80 md:pt-96 items-center">
+      <section className='w-full bg-radial from-orange-900 from-5% to-black justify-center items-center flex pb-64 px-16'>
+        <div className="w-9/10 border-none flex flex-col pt-80 md:pt-96 items-center border">
 
           <div className="pb-24">
             <div className='flex items-center justify-center gap-6 w-fit border border-primary py-4 px-12 rounded-full '>
@@ -52,7 +53,7 @@ function Explore() {
       {/* GUEST */}
       
       {/* Discover events that interest you */}
-      {false && <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
+      {true && <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
         
         <div className="col-span-1 md:col-span-3 pt-40">
           <div className="flex items-center justify-between">
@@ -64,50 +65,9 @@ function Explore() {
           </div>
         </div>
 
-        <article className='flex gap-12 flex-col border border-border-header round-8 overflow-hidden'>
-          <div className="">
-            <img className='w-full object-cover' src="/Image (Go Concurrency Workshop).svg" alt="Go Concurrency Workshop" />
-          </div>
-          <div className="flex flex-col gap-12 p-16">
-            <span className="">Go Concurrency Workshop</span>
+        <CategoryEvents category={"recommended_events"} limit={3} />
 
-            <div className="">
-              <div className="flex items-center gap-6">
-                <CiCalendar/>
-                <span className='text-xs text-font-forthy'>Sep 5, 2026 · 08:30 WIB</span>
-              </div>
-
-              <div className="flex items-center gap-6 pt-6">
-                <PiMapPinLight />
-                <span className='text-xs text-font-forthy'>Jakarta</span>
-              </div>
-
-              <div className="flex items-center gap-6 pt-6">
-                <GoPeople />
-                <span className='text-xs text-font-forthy'>J234 / 300 attendees</span>
-              </div>
-
-            </div>
-
-            <div className="">
-              <div className='flex justify-between [&_span]:text-xs [&_span]:text-font-forthy'>
-                <span>48 attendees</span>
-                <span>100 capacity</span>
-              </div>
-              <div className='w-full border-2 border-secondary mt-6'></div>
-            </div>
-
-            <div className="flex gap-8 pt-6 items-center">
-              <span className='bg-primary py-6 px-12 f-14 text-light w-full text-center font-medium round-8'>Join Event</span>
-              <div className='p-8 border-border-header border round-8'>
-                <CiBookmark className='text-font-secondary'/>
-              </div>
-            </div>
-
-          </div>
-        </article>
-
-      </section>}
+      </section>} 
 
       {/* ATTENDY */}      
       {/* Because you joined Bandung Go Community */}
@@ -128,48 +88,7 @@ function Explore() {
           </div>
         </div>
 
-        <article className='flex gap-12 flex-col border border-border-header round-8 overflow-hidden'>
-          <div className="">
-            <img className='w-full object-cover' src="/Image (Go Concurrency Workshop).svg" alt="Go Concurrency Workshop" />
-          </div>
-          <div className="flex flex-col gap-12 p-16">
-            <span className="">Go Concurrency Workshop</span>
-
-            <div className="">
-              <div className="flex items-center gap-6">
-                <CiCalendar/>
-                <span className='text-xs text-font-forthy'>Sep 5, 2026 · 08:30 WIB</span>
-              </div>
-
-              <div className="flex items-center gap-6 pt-6">
-                <PiMapPinLight />
-                <span className='text-xs text-font-forthy'>Jakarta</span>
-              </div>
-
-              <div className="flex items-center gap-6 pt-6">
-                <GoPeople />
-                <span className='text-xs text-font-forthy'>J234 / 300 attendees</span>
-              </div>
-
-            </div>
-
-            <div className="">
-              <div className='flex justify-between [&_span]:text-xs [&_span]:text-font-forthy'>
-                <span>48 attendees</span>
-                <span>100 capacity</span>
-              </div>
-              <div className='w-full border-2 border-secondary mt-6'></div>
-            </div>
-
-            <div className="flex gap-8 pt-6 items-center">
-              <span className='bg-primary py-6 px-12 f-14 text-light w-full text-center font-medium round-8'>Join Event</span>
-              <div className='p-8 border-border-header border round-8'>
-                <CiBookmark className='text-font-secondary'/>
-              </div>
-            </div>
-
-          </div>
-        </article>
+        <CategoryEvents category={"recommended_events"} limit={3} />
 
       </section>}      
 
@@ -188,48 +107,7 @@ function Explore() {
           </div>
         </div>
 
-        <article className='flex gap-12 flex-col border border-border-header round-8 overflow-hidden'>
-          <div className="">
-            <img className='w-full object-cover' src="/Image (Go Concurrency Workshop).svg" alt="Go Concurrency Workshop" />
-          </div>
-          <div className="flex flex-col gap-12 p-16">
-            <span className="">Go Concurrency Workshop</span>
-
-            <div className="">
-              <div className="flex items-center gap-6">
-                <CiCalendar/>
-                <span className='text-xs text-font-forthy'>Sep 5, 2026 · 08:30 WIB</span>
-              </div>
-
-              <div className="flex items-center gap-6 pt-6">
-                <PiMapPinLight />
-                <span className='text-xs text-font-forthy'>Jakarta</span>
-              </div>
-
-              <div className="flex items-center gap-6 pt-6">
-                <GoPeople />
-                <span className='text-xs text-font-forthy'>J234 / 300 attendees</span>
-              </div>
-
-            </div>
-
-            <div className="">
-              <div className='flex justify-between [&_span]:text-xs [&_span]:text-font-forthy'>
-                <span>48 attendees</span>
-                <span>100 capacity</span>
-              </div>
-              <div className='w-full border-2 border-secondary mt-6'></div>
-            </div>
-
-            <div className="flex gap-8 pt-6 items-center">
-              <span className='bg-primary py-6 px-12 f-14 text-light w-full text-center font-medium round-8'>Join Event</span>
-              <div className='p-8 border-border-header border round-8'>
-                <CiBookmark className='text-font-secondary'/>
-              </div>
-            </div>
-
-          </div>
-        </article>
+        <CategoryEvents category={"upcoming_events"} limit={3} />
 
       </section>}
 
