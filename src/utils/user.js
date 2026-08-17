@@ -1,6 +1,7 @@
 import { load, save } from "./helper/storage.js";
 
-function userLogin(user) {
+function userLogin(email) {
+    let {user} = checkEmailUser(email)
     user = {
         id: user.id,
         role: user.role,
@@ -9,7 +10,8 @@ function userLogin(user) {
     save("actived", user)
     return {
         status: true,
-        message: `${user.email} success login!`
+        message: `${user.email} success login!`,
+        user: user
     }
 }
 
@@ -84,8 +86,15 @@ function checkEmailUser(email) {
     }
 }
 
+function getUserById (id) {
+    const users = load("users")
+    const user = users.find((e)=> e.id === id)
+    return user
+}
+
 export {
     userLogin,
     userRegister,
-    checkEmailUser
+    checkEmailUser,
+    getUserById
 }
