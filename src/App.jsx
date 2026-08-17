@@ -15,6 +15,7 @@ import EventsCommunities from "./pages/communities/EventsCommunities.jsx";
 import MembersCommunities from "./pages/communities/MembersCommunities.jsx";
 import EventsLayout from "./layout/EventsLayout.jsx";
 import DiscussionCommunities from "./pages/communities/DiscussionCommunities.jsx";
+import DetailEvent from "./pages/events/DetailEvent.jsx";
 
 let router = createBrowserRouter([
   {
@@ -62,8 +63,8 @@ let router = createBrowserRouter([
             element: <Events/>
           },
           {
-            path: 'detail',
-            element: <Events/>
+            path: ':id',
+            element: <DetailEvent/>
           },
         ]
       },
