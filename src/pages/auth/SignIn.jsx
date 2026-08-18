@@ -139,7 +139,7 @@ function SignIn() {
           <span className='text-xs text-font-secondary'>Just browsing?</span>
           <Link
             className='text-xs text-font-secondary underline'
-            to="/"
+            to="/explore"
           >Continue as guest →</Link>
         </div>
 
