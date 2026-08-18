@@ -1,8 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Logo from '../components/header/Logo.jsx'
-import { Outlet } from 'react-router'
+import { Navigate, Outlet } from 'react-router'
+import { load } from '../utils/helper/storage.js'
 
 function AuthLayout() {
+  const [user, setUser] = useState()
+
+  useEffect(()=> {
+    const active = load("actived")
+    if(active) {
+      setUser(active)
+    }
+  },[])
+
+  if (user?.isActive) {
+    return <Navigate to="/explore" replace />
+  }
+  
   return (
     <main className="flex md:grid md:grid-cols-[35%_65%] w-full h-screen">
       <div
