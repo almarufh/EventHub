@@ -6,7 +6,6 @@ import SignUp from "./pages/auth/SignUp.jsx";
 import ForgotPasword from "./pages/auth/ForgotPasword.jsx";
 import Explore from "./pages/Explore.jsx";
 import Events from "./pages/events/Events.jsx";
-import Communities from "./pages/communities/Communities.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
 import SuccesPassword from "./pages/auth/SuccesPassword.jsx";
 import CommunitiesLayout from "./layout/CommunitiesLayout.jsx";
@@ -24,15 +23,14 @@ let router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to='events' replace />
+        element: <Navigate to='explore' replace />
       },
       {
         path: 'communities',
-        element: <CommunitiesLayout/> ,
         children: [
           {
             index: true,
-            element: <Communities/>
+            element: <CommunitiesLayout/>
           },
           {
             path: ':id',
@@ -40,11 +38,15 @@ let router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <EventsCommunities/>
+                element: <Navigate to="events"/>
               },
               {
                 path: "members",
                 element: <MembersCommunities/>
+              },
+              {
+                path: "events",
+                element: <EventsCommunities/>
               },
               {
                 path: "discussion",
@@ -103,6 +105,10 @@ let router = createBrowserRouter([
         element: <SuccesPassword/>
       }
     ]
+  },
+  {
+    path: "*",
+    element: <Navigate to='explore' replace />
   }
 ])
 
