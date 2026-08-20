@@ -1,5 +1,5 @@
-import { Outlet } from 'react-router'
 import { LuSearch } from 'react-icons/lu'
+import Communities from '../pages/communities/Communities'
 
 function CommunitiesLayout() {
   return (
@@ -16,7 +16,7 @@ function CommunitiesLayout() {
       </section>
 
       <section className='w-full flex flex-col items-center justify-center'>
-        <div className="flex flex-col md:flex-row w-9/10 items-start md:items-center gap-8 md:gap-5">
+        <div className="flex flex-col md:flex-row w-full items-start md:items-center gap-8 md:gap-5">
 
           <div 
             className="border border-border-header w-fit round-8 gap-4 flex 
@@ -40,7 +40,7 @@ function CommunitiesLayout() {
 
         </div>
       </section>
-      <Outlet/>
+      <Communities/>
     </main>
   )
 }
