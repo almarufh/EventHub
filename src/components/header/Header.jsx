@@ -45,7 +45,7 @@ function Header() {
         </div>
         ) : data.role === "organizer" ? (
           <div
-          className="flex items-center gap-6 round-8 py-6 px-12 bg-[#FF5F2214]"
+          className="flex items-center gap-6 round-8 py-6 px-12 bg-primary8"
           >
             <RxDashboard className="text-primary"/>
             <span
