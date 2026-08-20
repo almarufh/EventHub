@@ -1,19 +1,19 @@
-import { filterEvents } from "../../utils/events.js";
+// import { filterEvents } from "../../utils/events.js";
 import { CiCalendar, CiBookmark } from "react-icons/ci";
 import { PiMapPinLight } from "react-icons/pi";
 import { GoPeople } from "react-icons/go";
 import * as imgEvent from "../../assets/events/index.js";
 import { Link } from "react-router";
 import { useState } from "react";
+import { eventsByCategory } from "../../database/data.js";
 
-function CategoryEvents({ category, limit }) {
-    const events = filterEvents(category, limit);
+function CardEvents({ category, limit, setTotal }) {
+    const events = eventsByCategory(category, limit);
+    setTotal(events.length)
     const [btn, setBtn] = useState({
       status: false,
       value: "Join Event"
     })
-
-    console.log("Nilai btn.value:", btn.value);
 
     return (
         <>
@@ -23,20 +23,19 @@ function CategoryEvents({ category, limit }) {
                 const percentage = Math.min(Math.round((attendeesCount / capacityCount) * 100), 100);
 
                 return ( 
-                    <Link to={`/events/${res.id}`}>
+                    <Link key={res.id || index} to={`/events/${res.id}`}>
                       <article
-                          key={res.id || index}
-                          className='flex flex-col border border-border-header rounded-xl overflow-hidden justify-between bg-white shadow-sm'
+                          className='flex flex-col border border-border-header rounded-xl overflow-hidden justify-between bg-white shadow-sm h-full'
                       >
                         <div className="w-full h-176 overflow-hidden relative">
                           <img
                             className='w-full h-full object-cover'
-                            src={imgEvent[res.image]}
-                            alt={res.title || res.name}
+                            src={res.image}
+                            alt={res.title}
                           />
-                          {res.tags && res.tags.length > 0 && (
+                          {res.category && res.category.length > 0 && (
                               <div className="absolute bottom-12 left-12 flex gap-4">
-                                  {res.tags.map((tag, idx) => (
+                                  {res.category.map((tag, idx) => (
                                       <span key={idx} className="bg-white/80 backdrop-blur-sm text-xs px-8 py-2 rounded-full font-medium text-dark">
                                           {tag}
                                       </span>
@@ -52,7 +51,7 @@ function CategoryEvents({ category, limit }) {
                               {res.date && (
                                 <div className="flex items-center gap-6">
                                   <CiCalendar className="text-font-forthy text-base"/>
-                                  <span className='text-xs text-font-forthy'>{res.date}</span>
+                                  <span className='text-xs text-font-forthy'>{`${res.date.day}, ${res.date.month} ${res.date.years}`}</span>
                                 </div>
                               )}
                       
@@ -116,4 +115,4 @@ function CategoryEvents({ category, limit }) {
     );
 }
 
-export default CategoryEvents;
+export default CardEvents;

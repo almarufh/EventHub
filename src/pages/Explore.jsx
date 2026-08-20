@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import star from '../assets/icons/Sparkles.svg'
 import { Outlet } from 'react-router'
 import { LuSearch } from 'react-icons/lu'
@@ -8,8 +8,18 @@ import { PiMapPinLight } from 'react-icons/pi'
 import { GoPeople } from 'react-icons/go'
 import { FaArrowTrendUp } from 'react-icons/fa6'
 import CategoryEvents from '../components/events/CategoryEvents'
+import { load } from '../utils/helper/storage'
 
 function Explore() {
+  const [user, setUser] = useState()
+
+  useEffect(()=> {
+    const active = load("actived")
+    if(active) {
+      setUser(active)
+    }
+  },[])
+
   return (
     <main className='flex flex-col w-full items-center'>
       <section className='w-full bg-radial from-orange-900 from-5% to-black justify-center items-center flex pb-64 px-16'>
