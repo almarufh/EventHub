@@ -1,15 +1,25 @@
-// import { filterEvents } from "../../utils/events.js";
 import { CiCalendar, CiBookmark } from "react-icons/ci";
 import { PiMapPinLight } from "react-icons/pi";
 import { GoPeople } from "react-icons/go";
-import * as imgEvent from "../../assets/events/index.js";
 import { Link } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { eventsByCategory } from "../../database/data.js";
 
-function CardEvents({ category, limit, setTotal }) {
-    const events = eventsByCategory(category, limit);
-    setTotal(events.length)
+function CardEvents({ category, community, limit, setTotal }) {
+    const payload = {
+      category: category || null,
+      community: community || null,
+      limit: limit || null
+    }
+
+    const events = eventsByCategory(payload);
+
+    useEffect(() => {
+      if (events && setTotal) {
+        setTotal(events.length);
+      }
+    }, [events, setTotal]);
+    
     const [btn, setBtn] = useState({
       status: false,
       value: "Join Event"
