@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router'
 import { LuSearch } from 'react-icons/lu'
-import { TbListTree } from 'react-icons/tb'
 
 function CommunitiesLayout() {
   return (
