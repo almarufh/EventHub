@@ -6,7 +6,7 @@ import SignUp from "./pages/auth/SignUp.jsx";
 import ForgotPasword from "./pages/auth/ForgotPasword.jsx";
 import Explore from "./pages/Explore.jsx";
 import Events from "./pages/events/Events.jsx";
-import MyEvents from "./pages/MyEvents.jsx";
+import MyEvents from "./pages/myevents/MyEvents.jsx";
 import SuccesPassword from "./pages/auth/SuccesPassword.jsx";
 import CommunitiesLayout from "./layout/CommunitiesLayout.jsx";
 import CommunitieDetail from "./pages/communities/CommunitieDetail.jsx";
@@ -15,6 +15,12 @@ import MembersCommunities from "./pages/communities/MembersCommunities.jsx";
 import EventsLayout from "./layout/EventsLayout.jsx";
 import DiscussionCommunities from "./pages/communities/DiscussionCommunities.jsx";
 import DetailEvent from "./pages/events/DetailEvent.jsx";
+import Upcomming from "./pages/myevents/Upcomming.jsx";
+import Past from "./pages/myevents/Past.jsx";
+import Saved from "./pages/myevents/Saved.jsx";
+import MyProfile from "./pages/myprofile/MyProfile.jsx";
+import ProfileEvents from "./pages/myprofile/ProfileEvents.jsx";
+import MyProfileLayout from "./layout/MyProfileLayout.jsx";
 
 let router = createBrowserRouter([
   {
@@ -72,7 +78,40 @@ let router = createBrowserRouter([
       },
       {
         path: 'myevents',
-        element: <MyEvents/>
+        element: <MyEvents />,
+        children: [
+          {
+            path: "upcoming",
+            element: <Upcomming/>
+          },
+          {
+            path: "past",
+            element: <Past/>
+          },
+          {
+            path: "saved",
+            element: <Saved/>
+          }
+        ]
+      },
+      {
+        path: "myprofile",
+        children: [
+          {
+            index: true,
+            element: <MyProfileLayout/>
+          },
+          {
+            path: ":id",
+            element: <MyProfile/>,
+            children: [
+              {
+                index: true,
+                element: <ProfileEvents/>
+              }
+            ]
+          }
+        ]
       },
       {
         path: 'explore',
