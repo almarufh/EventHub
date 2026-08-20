@@ -1,6 +1,5 @@
 import { FaArrowLeft } from "react-icons/fa6";
-import * as imgEvent from "../../assets/events/index.js";
-import { CiCalendar, CiBookmark } from "react-icons/ci";
+import { CiCalendar} from "react-icons/ci";
 import { PiMapPinLight } from "react-icons/pi";
 import { GoBookmark, GoClock, GoPeople } from "react-icons/go";
 import { MdShare } from "react-icons/md";
@@ -10,7 +9,6 @@ import { getFullEventDetails } from "../../database/data.js";
 function DetailEvent() {
   const {id} = useParams()
   const event = getFullEventDetails(id)
-  console.log(event)
 
   const attendeesCount = event.attendees || 0;
   const capacityCount = event.capacity || 100;
