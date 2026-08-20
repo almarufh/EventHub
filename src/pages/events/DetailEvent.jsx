@@ -5,11 +5,12 @@ import { PiMapPinLight } from "react-icons/pi";
 import { GoBookmark, GoClock, GoPeople } from "react-icons/go";
 import { MdShare } from "react-icons/md";
 import { Link, useParams } from "react-router";
-import { findEventsById } from "../../utils/events.js";
+import { getFullEventDetails } from "../../database/data.js";
 
 function DetailEvent() {
   const {id} = useParams()
-  const event = findEventsById(id)
+  const event = getFullEventDetails(id)
+  console.log(event)
 
   const attendeesCount = event.attendees || 0;
   const capacityCount = event.capacity || 100;
@@ -19,7 +20,7 @@ function DetailEvent() {
     return(
       <div className="flex gap-12 rounded-xl border border-border-header p-16 w-full">
         <div className="border w-40 h-40 rounded-full">
-          <img src="" alt="" className="" />
+          <img src="#" alt="#" className="" />
         </div>
         <div className="flex flex-col">
           <span className="f-14 text-dark-primary font-semibold">Ahmad Fauzan</span>
@@ -37,22 +38,22 @@ function DetailEvent() {
       </Link>
       
       <section className="flex flex-col md:flex-row w-9/10 gap-8 items-satart justify-between">
-        <div className="border w-full md:w-6/10 overflow-hidden relative round-8">
-          <img src={imgEvent[event.image]} alt="g" className="w-full h-full object-cover" />
+        <div className="flex  w-full max-w-500 h-full max-h-450 md:w-5/10 overflow-hidden relative round-8">
+          <img src={event.image} alt={event.id} className="w-full h-full object-contains" />
         </div>
         
-        <div className="w-full md:w-4/10 flex items-center justify-center">
+        <div className="w-full md:w-4/10 h-fit flex justify-center">
           <div className="w-full border border-border-header p-20 bg-light round-8 flex flex-col gap-10">
             <span className="text-xs text-font-forthy">Event info</span>
 
             <div className="flex items-center gap-6">
               <CiCalendar className="text-font-forthy text-base"/>
-              <span className='text-xs text-font-forthy'>{event.date}</span>
+              <span className='text-xs text-font-forthy'>{`${event.date.day} ${event.date.month} ${event.date.years}`}</span>
             </div>
 
             <div className="flex items-center gap-6">
               <GoClock className="text-font-forthy text-base"/>
-              <span className="text-xs text-font-forthy">{event.date}</span>
+              <span className="text-xs text-font-forthy">{`${event.time.start}-${event.time.end}`}</span>
             </div>
 
             <div className="flex items-center gap-6">
@@ -91,7 +92,12 @@ function DetailEvent() {
                 <span>Share</span>
               </div>
             </div>
-
+            <div className="flex flex-col w-full gap-12 mt-24 md:mt-50">
+              <span className="text-xs text-font-forthy font-semibold">Organized By</span>
+              <div className="flex w-full">
+                <CreateUser/>
+              </div>
+            </div>
             </div>
           </div>
         </div>
@@ -110,8 +116,7 @@ function DetailEvent() {
           </div>
           <span className="text-3xl font-bold">{event.title}</span>
           <span className="text-lg font-medium text-dark-primary">About this event</span>
-          <span className="f-16 text-font-primary">A deep-dive workshop into Go concurrency patterns — goroutines, channels, select statements, and real-world use cases. Suitable for intermediate Go developers ready to write production-grade concurrent code. We'll cover common pitfalls, race conditions, and how to use the sync package effectively. Bring your laptop and be ready to write a lot of code.</span>
-          <span className="f-16 text-font-primary">We'll build three mini-projects throughout the day: a rate limiter, a worker pool, and a concurrent web scraper.</span>
+          <span className="f-16 text-font-primary">{event.content}</span>
           <div className="flex flex-col gap-16 pt-12">
             <span className="text-lg font-semibold">Speaker</span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -122,12 +127,12 @@ function DetailEvent() {
         </div>
 
         <div className="flex order-1 md:order-2 w-full md:w-4/10">
-          <div className="flex flex-col w-full gap-12 mt-24">
+          {/* <div className="flex flex-col w-full gap-12 mt-24">
             <span className="text-xs text-font-forthy font-semibold">Organized By</span>
             <div className="flex w-full">
               <CreateUser/>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 
