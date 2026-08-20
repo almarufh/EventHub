@@ -118,7 +118,7 @@ function NavMobile({user, setUser, setShowNav, showNav}) {
 
             { user.isActive && <li>
                 <NavLink
-                to="/events"
+                to="/myprofile"
                 end
                 className={({ isActive }) =>
                     `flex gap-12 f-14 pt-14 px-16 pb-10 items-center ${
