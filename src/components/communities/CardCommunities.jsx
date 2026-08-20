@@ -10,6 +10,7 @@ function CardCommunities({limit}) {
         {true && (communities.map((e) => {
             return (
             <Link
+              to={`/communities/${e.id}`}
                 key={e.id}
             >
             <article className='flex gap-12 h-full justify-between flex-col border border-border-header round-8 overflow-hidden'>
