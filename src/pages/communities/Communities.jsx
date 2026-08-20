@@ -1,8 +1,10 @@
-import React from 'react'
+import CardCommunities from '../../components/communities/CardCommunities.jsx'
 
 function Communities() {
   return (
-    <div>Communities</div>
+    <section className='grid grid-cols-4 px-16 gap-8'>
+      <CardCommunities />
+    </section>
   )
 }
 
