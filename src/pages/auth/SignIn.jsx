@@ -28,7 +28,6 @@ function SignIn() {
       setUser(user)
       navigate("/explore")
     }
-    console.log(getUser)
   }
 
   return (

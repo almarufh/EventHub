@@ -50,7 +50,7 @@ function NavMobile({user, setUser, setShowNav, showNav}) {
         )}
         <ul className='flex flex-col'>
             <li
-                className='flex md:hidden'
+                className='md:hidden w-full'
             >
                 <NavLink
                 to="/explore"
@@ -66,7 +66,7 @@ function NavMobile({user, setUser, setShowNav, showNav}) {
                 </NavLink>
             </li>
             <li
-                className='flex md:hidden'
+                className='md:hidden'
             >
                 <NavLink
                 to="/events"
@@ -83,7 +83,7 @@ function NavMobile({user, setUser, setShowNav, showNav}) {
             </li>
         
             <li
-                className='flex md:hidden'
+                className='md:hidden'
             >
                 <NavLink
                 to="/communities"
@@ -99,8 +99,8 @@ function NavMobile({user, setUser, setShowNav, showNav}) {
                 </NavLink>
             </li>
             
-            <li
-                className='flex md:hidden'
+            {user.isActive && (<li
+                className='md:hidden'
             >
                 <NavLink
                 to="/myevents"
@@ -114,7 +114,7 @@ function NavMobile({user, setUser, setShowNav, showNav}) {
                 <LuCalendar/>
                 <span>My Events</span>
                 </NavLink>
-            </li>
+            </li>)}
 
             { user.isActive && <li>
                 <NavLink
