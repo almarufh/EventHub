@@ -7,8 +7,9 @@ import { CiBookmark, CiCalendar } from 'react-icons/ci'
 import { PiMapPinLight } from 'react-icons/pi'
 import { GoPeople } from 'react-icons/go'
 import { FaArrowTrendUp } from 'react-icons/fa6'
-import CategoryEvents from '../components/events/CategoryEvents'
+import CardEvents from '../components/events/CardEvents'
 import { load } from '../utils/helper/storage'
+import CardCommunities from '../components/communities/CardCommunities'
 
 function Explore() {
   const [user, setUser] = useState()
@@ -75,14 +76,14 @@ function Explore() {
           </div>
         </div>
 
-        <CategoryEvents category={"recommended_events"} limit={3} />
+        <CardEvents category={"Technology"} limit={6} />
 
       </section>} 
 
       {/* ATTENDY */}      
       {/* Because you joined Bandung Go Community */}
 
-      {true && <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
+      {false && <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
         
         <div className="col-span-1 md:col-span-3 pt-40">
           <div className="flex gap-4 md:gap-8 items-center">
@@ -98,14 +99,14 @@ function Explore() {
           </div>
         </div>
 
-        <CategoryEvents category={"recommended_events"} limit={3} />
+        <CardEvents category={"recommended_events"} limit={3} />
 
       </section>}      
 
 
       {/* All Upcoming Events */}
 
-      {true && <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
+      {false && <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
         
         <div className="col-span-1 md:col-span-3 pt-40">
           <div className="flex items-center justify-between gap-2">
@@ -117,15 +118,15 @@ function Explore() {
           </div>
         </div>
 
-        <CategoryEvents category={"upcoming_events"} limit={3} />
+        <CardEvents category={"upcoming_events"} limit={3} />
 
       </section>}
 
       {/* Popular Communities */}
 
-      <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
+      <section className='grid grid-cols-1 md:grid-cols-4 w-9/10 gap-12'>
         
-        <div className="col-span-1 md:col-span-3 pt-40">
+        <div className="col-span-1 md:col-span-4 pt-40">
           <div className="flex items-center justify-between">
             <span className='font-bold text-md'>Popular Communities</span>
             <div className="flex items-center gap-2 md:gap-4">
@@ -135,7 +136,9 @@ function Explore() {
           </div>
         </div>
 
-        <article className='flex gap-12 flex-col border border-border-header round-8 overflow-hidden'>
+        <CardCommunities limit={4}/>
+
+        {/* <article className='flex gap-12 flex-col border border-border-header round-8 overflow-hidden'>
           <div className="">
             <img className='w-full object-cover' src="/Image (Go Concurrency Workshop).svg" alt="Go Concurrency Workshop" />
           </div>
@@ -165,7 +168,7 @@ function Explore() {
             </div>
 
           </div>
-        </article>
+        </article> */}
 
       </section>
 
