@@ -20,7 +20,8 @@ import Past from "./pages/myevents/Past.jsx";
 import Saved from "./pages/myevents/Saved.jsx";
 import MyProfile from "./pages/myprofile/MyProfile.jsx";
 import ProfileEvents from "./pages/myprofile/ProfileEvents.jsx";
-import MyProfileLayout from "./layout/MyProfileLayout.jsx";
+import ProfileComunities from "./pages/myprofile/ProfileComunities.jsx";
+import ProfileSaved from "./pages/myprofile/ProfileSaved.jsx";
 
 let router = createBrowserRouter([
   {
@@ -44,7 +45,7 @@ let router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <Navigate to="events"/>
+                element: <Navigate to="events" replace/>
               },
               {
                 path: "members",
@@ -81,33 +82,59 @@ let router = createBrowserRouter([
         element: <MyEvents />,
         children: [
           {
-            path: "upcoming",
-            element: <Upcomming/>
+            index: true,
+            element: <Navigate to=":id" replace />
           },
           {
-            path: "past",
-            element: <Past/>
-          },
-          {
-            path: "saved",
-            element: <Saved/>
+            path: ":id",
+            children: [
+              {
+                index: true,
+                element: <Navigate to="upcoming" replace />
+              },
+              {
+                path: "upcoming",
+                element: <Upcomming/>
+              },
+              {
+                path: "past",
+                element: <Past/>
+              },
+              {
+                path: "saved",
+                element: <Saved/>
+              }
+            ]
           }
         ]
       },
       {
         path: "myprofile",
+        // element: <MyProfileLayout/>
+        element: <MyProfile/>,
         children: [
           {
             index: true,
-            element: <MyProfileLayout/>
+            element: <Navigate to=":id" replace/>
           },
           {
             path: ":id",
-            element: <MyProfile/>,
             children: [
               {
                 index: true,
+                element: <Navigate to="events" replace />
+              },
+              {
+                path: "events",
                 element: <ProfileEvents/>
+              },
+              {
+                path: "communities",
+                element: <ProfileComunities />
+              },
+              {
+                path: "saved",
+                element: <ProfileSaved />
               }
             ]
           }
