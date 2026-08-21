@@ -103,7 +103,7 @@ function NavMobile({user, setUser, setShowNav, showNav}) {
                 className='md:hidden'
             >
                 <NavLink
-                to="/myevents"
+                to={`/myevents/${user.id}`}
                 end
                 className={({ isActive }) =>
                     `flex gap-12 f-14 pt-14 px-16 pb-10 items-center ${
@@ -118,7 +118,7 @@ function NavMobile({user, setUser, setShowNav, showNav}) {
 
             { user.isActive && <li>
                 <NavLink
-                to="/myprofile"
+                to={`/myprofile/${user.id}`}
                 end
                 className={({ isActive }) =>
                     `flex gap-12 f-14 pt-14 px-16 pb-10 items-center ${
