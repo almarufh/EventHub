@@ -1,18 +1,19 @@
-import { NavLink } from "react-router"
+import { NavLink, Outlet, useParams } from "react-router"
 
 function MyEvents() {
+  const {id} = useParams()
   const tab = [
     {
       name: "Upcoming",
-      link: "/myevents/upcoming"
+      link: `/myevents/${id}/upcoming`
     },
     {
-      name: "Members",
-      link: "/myevents/past"
+      name: "Past",
+      link: `/myevents/${id}/past`
     },
     {
-      name: "Discussion",
-      link: "/myevents/saved"
+      name: "Saved",
+      link: `/myevents/${id}/saved`
     }
 ]
   return (
@@ -25,7 +26,11 @@ function MyEvents() {
           )}
         </div>
       </section>
+      <section className="mt-10">
+        <Outlet/>
+      </section>
     </main>
+
   )
 }
 
