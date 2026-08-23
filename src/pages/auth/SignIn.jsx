@@ -1,15 +1,24 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Logo from '../../components/header/Logo.jsx'
 import { Link, useNavigate} from 'react-router'
 import { LuEye, LuEyeClosed } from 'react-icons/lu'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
-import { checkEmailUser, userLogin } from '../../utils/user.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { checkEmail, login } from '../../redux/slice/user.js'
 
 function SignIn() {
+  // Redux Persist
+  const dispatch = useDispatch()
+  const state = useSelector(state => state.eventHub)
+  const {isExist, message, data} = state.userExist
+  const {isActive, message: status} = state.actived
+
+  // state
   const {register, handleSubmit, formState: { errors }} = useForm()
   const [show, setShow] = useState({value: false, type: "password"})
-  const [getUser, setUser] = useState({email: "", password: ""})
+
+  // navigate
   const navigate = useNavigate()
 
   const passwordShow = () => {
@@ -23,9 +32,9 @@ function SignIn() {
   };
 
   function sign(e){
-    const {status, user} = userLogin(e.email)
-    if(status) {
-      setUser(user)
+    dispatch(login(e))
+    if(isActive) {
+      dispatch(checkEmail(null))
       navigate("/explore")
     }
   }
@@ -80,12 +89,11 @@ function SignIn() {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: "Format email tidak valid"
                 },
-                validate: (value)=>{
-                  const {status, user, message} = checkEmailUser(value)
-                  if(user !== undefined){
-                    setUser(user)
+                validate: (value) => {
+                  dispatch(checkEmail(value))
+                  if(!isExist){
+                    return message
                   }
-                  return status || "Email belum terdaftar"
                 }
               })} 
               id="email" 
@@ -115,7 +123,7 @@ function SignIn() {
                   message: "Password minimal 8 karakter"
                 },
                 validate: (value)=>{
-                  return btoa(getUser.password) === value || "Wrong Password"
+                  return btoa(data.password) === value || "Wrong Password"
                 }
               }
               )}
@@ -129,6 +137,9 @@ function SignIn() {
             </div>
             <span className={`${errors?.password ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.password?.message || "error"}</span>
           </div>
+
+          <span className={`${isActive?.password ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{isActive || "error"}</span>
+
           <button
             className='bg-primary py-12 w-full my-center rounded-lg f-14 text-light font-semibold cursor-pointer'
           >Sign in</button>
