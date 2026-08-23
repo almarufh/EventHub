@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from 'react'
 import Logo from '../components/header/Logo.jsx'
 import { Navigate, Outlet } from 'react-router'
-import { load } from '../utils/helper/storage.js'
+import { useSelector } from 'react-redux'
 
 function AuthLayout() {
-  const [user, setUser] = useState()
+  const data = useSelector(state => state.eventHub)
 
-  useEffect(()=> {
-    const active = load("actived")
-    if(active) {
-      setUser(active)
-    }
-  },[])
-
-  if (user?.isActive) {
+  if (data?.actived?.isActive) {
     return <Navigate to="/explore" replace />
   }
   
