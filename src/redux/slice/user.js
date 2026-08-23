@@ -17,9 +17,9 @@ const initialState  = {
         message: null
     },
     actived: {
-        id: "123456",
+        id: null,
         isActive: false,
-        role: null,
+        role: "guest",
         isError: false,
         message: null
     },
@@ -28,6 +28,7 @@ const initialState  = {
         message: null,
         data: {}
     },
+    isDark: false,
     isPending: false,
     isSuccess: false,
     isError: false,
@@ -38,7 +39,6 @@ const eventHub = createSlice({
     name: "eventHub",
     initialState,
     reducers: {
-
         registerUser: (state, {payload}) => {
             state.user.isLoading = true
             state.user.isError = false
@@ -58,10 +58,13 @@ const eventHub = createSlice({
             state.user.message = `${payload.email} berhasil terdaftar !`
             state.user.users.push(payload)
         },
+        tglDark: (state) => {
+            state.isDark = !state.isDark
+        },
         checkEmail: (state, {payload}) => {
             state.userExist.isExist = false
             state.userExist.message = null
-            const isReady =  state.user.users.find((e)=> e.email === payload)
+            const isReady =  state.user.users.find((e)=> e.email === payload || e.id === payload)
 
             if (!isReady) {
                 state.userExist.message = "email belum terdaftar !"
@@ -88,7 +91,6 @@ const eventHub = createSlice({
             }
 
             if (btoa(isReady.password) !== payload.password) {
-            // if (isReady.password !== payload.password) {
                 state.actived.isActive = false
                 state.actived.isError = true
                 state.actived.message = "Pasword Salah !"
@@ -108,6 +110,7 @@ const eventHub = createSlice({
 export const {
     registerUser, 
     login,
+    tglDark,
     checkEmail,
 } = eventHub.actions
 export default eventHub.reducer
