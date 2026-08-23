@@ -1,12 +1,19 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Logo from '../../components/header/Logo'
 import { Link, useNavigate } from 'react-router'
 import { LuEye, LuEyeClosed } from 'react-icons/lu'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
-import { userRegister, checkEmailUser } from '../../utils/user.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { checkEmail, registerUser } from '../../redux/slice/user.js'
 
 function SignUp() {
+  // Redux Persist
+  const dispatch = useDispatch()
+  const state = useSelector(state => state.eventHub)
+  const {isExist, message} = state.userExist
+
+  // state
   const {register, handleSubmit, formState: { errors }} = useForm()
   const [show, setShow] = useState({
     password: {
@@ -41,11 +48,34 @@ function SignUp() {
 
   const navigate = useNavigate()
   function saveUser(e) {
-    const {status} = userRegister(e)
-    if(status) {
-      navigate("/auth/signin")
+    
+    let user = {
+        id: `${Date.now()}`,
+        email: e.email.toLowerCase(),
+        name: e.name,
+        password: atob(e.password),
+        role: "attendee"
     }
 
+    // check admin
+    const admin = JSON.parse(import.meta.env.VITE_ADMIN)
+    admin.forEach(a => {
+        if(a === user.email) {
+            user.role = "admin"
+        }
+    });    
+    
+    // check admin
+    const organizer = JSON.parse(import.meta.env.VITE_ADMIN)
+    organizer.forEach(a => {
+        if(a === user.email) {
+            user.role = "organizer"
+        }
+    });
+
+    dispatch(registerUser(user))
+
+    navigate("/auth/signin")
   }
   return (
     <div className='w-full h-screen flex justify-center items-center'>
@@ -112,12 +142,11 @@ function SignUp() {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: "Format email tidak valid"
                 },
-                validate: (value)=>{
-                  const {status, message} = checkEmailUser(value)
-                  // if(user !== undefined){
-                  //   setUser(user)
-                  // }
-                  return !status || message
+                validate: (value)=> {
+                  dispatch(checkEmail(value))
+                  if(isExist){
+                    return message
+                  }
                 }
               })} 
               id="email" 
