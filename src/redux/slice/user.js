@@ -76,11 +76,6 @@ const eventHub = createSlice({
             state.userExist.data = isReady
         },
         login: (state, {payload})=> {
-            state.actived.isError = false
-            state.actived.isActive = false
-            state.actived.id = null
-            state.actived.message = null
-            state.actived.role = null
             const isReady =  state.user.users.find((e)=> e.email === payload.email)
 
             if (!isReady) {
@@ -102,6 +97,13 @@ const eventHub = createSlice({
             state.actived.id = isReady.id
             state.actived.message = null
             state.actived.role = isReady.role
+        },
+        logout: (state)=> {
+            state.actived.isError = false
+            state.actived.isActive = false
+            state.actived.id = null
+            state.actived.message = null
+            state.actived.role = "guest"
         }
 
     }
@@ -110,6 +112,7 @@ const eventHub = createSlice({
 export const {
     registerUser, 
     login,
+    logout,
     tglDark,
     checkEmail,
 } = eventHub.actions
