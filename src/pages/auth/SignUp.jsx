@@ -4,17 +4,16 @@ import { Link, useNavigate } from 'react-router'
 import { LuEye, LuEyeClosed } from 'react-icons/lu'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useStore } from 'react-redux'
 import { checkEmail, registerUser } from '../../redux/slice/user.js'
 
 function SignUp() {
   // Redux Persist
   const dispatch = useDispatch()
-  const state = useSelector(state => state.eventHub)
-  const {isExist, message} = state.userExist
+  const store = useStore()
 
   // state
-  const {register, handleSubmit, formState: { errors }} = useForm()
+  const {register, handleSubmit, formState: { errors }} = useForm({mode: "onBlur"})
   const [show, setShow] = useState({
     password: {
       value: false,
@@ -66,7 +65,7 @@ function SignUp() {
     });    
     
     // check admin
-    const organizer = JSON.parse(import.meta.env.VITE_ADMIN)
+    const organizer = JSON.parse(import.meta.env.VITE_ORGANIZER)
     organizer.forEach(a => {
         if(a === user.email) {
             user.role = "organizer"
@@ -144,8 +143,9 @@ function SignUp() {
                 },
                 validate: (value)=> {
                   dispatch(checkEmail(value))
-                  if(isExist){
-                    return message
+                  const { isExist: exist, message: getMessage } = store.getState().eventHub.userExist
+                  if(exist){
+                    return getMessage
                   }
                 }
               })} 
