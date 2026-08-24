@@ -22,6 +22,12 @@ import MyProfile from "./pages/myprofile/MyProfile.jsx";
 import ProfileEvents from "./pages/myprofile/ProfileEvents.jsx";
 import ProfileComunities from "./pages/myprofile/ProfileComunities.jsx";
 import ProfileSaved from "./pages/myprofile/ProfileSaved.jsx";
+import DashboarLayout from "./layout/DashboarLayout.jsx";
+import AdminDashboar from "./pages/dashboard/AdminDashboar.jsx";
+import OrganizerDashboard from "./pages/dashboard/OrganizerDashboard.jsx";
+import NotificationLayout from "./layout/NotificationLayout.jsx";
+import AllNotifications from "./pages/notification/AllNotifications.jsx";
+import UnreadNotifications from "./pages/notification/UnreadNotifications.jsx";
 
 let router = createBrowserRouter([
   {
@@ -30,7 +36,7 @@ let router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to='explore' replace />
+        element: <Explore/>
       },
       {
         path: 'communities',
@@ -110,7 +116,6 @@ let router = createBrowserRouter([
       },
       {
         path: "myprofile",
-        // element: <MyProfileLayout/>
         element: <MyProfile/>,
         children: [
           {
@@ -141,8 +146,32 @@ let router = createBrowserRouter([
         ]
       },
       {
-        path: 'explore',
-        element: <Explore/>
+        path: "dashboard",
+        element: <DashboarLayout/>,
+        children: [
+          {
+            path: "admin/:id",
+            element: <AdminDashboar/>
+          },
+          {
+            path: "dashboard/:id",
+            element: <OrganizerDashboard/>
+          }
+        ]
+      },
+      {
+        path: "notifications/:id",
+        element: <NotificationLayout/>,
+        children: [
+          {
+            path: "all",
+            element: <AllNotifications/>
+          },
+          {
+            path: "unread",
+            element: <UnreadNotifications/>
+          }
+        ]
       }
     ]
   },
