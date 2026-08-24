@@ -1,161 +1,146 @@
-import React, { useEffect, useState } from 'react'
 import { GoPerson } from 'react-icons/go'
-import { LuCalendar, LuLogOut } from 'react-icons/lu'
-import { MdOutlineExplore } from 'react-icons/md'
-import { RxPeople } from 'react-icons/rx'
-import { TbHome } from 'react-icons/tb'
-import {Link, NavLink, useNavigate } from 'react-router'
-import { remove } from '../../utils/helper/storage'
-import { getUserById } from '../../utils/user'
+import { LuLogOut } from 'react-icons/lu'
+import { NavLink, useNavigate } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../../redux/slice/user'
+import { RxDashboard } from 'react-icons/rx'
+import { FiShield } from 'react-icons/fi'
 
-function NavMobile({user, setUser, setShowNav, showNav}) {
+function NavMobile({props}) {
+    const {listNavbar, setShowNav, showNav} = props
+    const dispatch = useDispatch()
+    const { isDark, actived, userExist } = useSelector(state => state.eventHub)
+
+    const {name, email} = userExist.data
     const navigate = useNavigate()
-    const [getActive, setActive] = useState({})
-    const [nav, setNav] = useState({
-        auth: "Sign In"
-    })
-    
-    useEffect(()=> {
-        if(user.isActive){
-            setActive(getUserById(user.id))
-            setNav((prevNav)=>{
-                return {
-                    ...prevNav,
-                    auth: "Sign Out"
-                }
-            })
-        } else {
-            setNav((prevNav)=>{
-                return {
-                    ...prevNav,
-                    auth: "Sign In"
-                }
-            })
-        }
-    },[])
-
+ 
     return (
-        <>
-    <div className="flex flex-col">
-        {user.isActive ? (<div className="flex gap-12 py-12 px-16 items-center">
-            <div className="border border-border-header w-36 h-36 rounded-full items-center justify-center flex">
-                <span className="text-primary f-14 font-bold">{getActive?.name?.charAt(0)}</span>
+    <div className={` ${isDark 
+        ? "" 
+        : "flex flex-col"}
+    `}>
+        {actived.isActive 
+        ? <div className={` ${isDark 
+            ? "" 
+            : "flex gap-12 py-12 px-16 items-center"}
+        `}>
+            <div className= {` ${isDark 
+                ? "" 
+                : "border border-border-header w-36 h-36 rounded-full items-center justify-center flex"}
+            `}>
+                <span className={`${isDark 
+                    ? "" 
+                    : "text-primary f-14 font-bold"}`}
+                >{name?.charAt(0)}</span>
             </div>
-            <div className="flex flex-col">
-                <span className='f-14 font-bold text-dark-primary'>{getActive?.name}</span>
-                <span className='text-xs text-font-secondary'>{getActive?.email}</span>
+
+            <div className={`${isDark 
+                ? "" 
+                : "flex flex-col"}
+            `}>
+                <span className={`${isDark 
+                    ? "" 
+                    : "f-14 font-bold text-dark-primary"}
+                `}>{name}</span>
+                <span className={`${isDark 
+                    ? "" 
+                    : "text-xs text-font-secondary"}
+                `}>{email}</span>
             </div>
-        </div>) : (
-            <span className='text-font-secondary text-xs pl-16 pr-30 pt-10'>Browsing as guest</span>
-        )}
-        <ul className='flex flex-col'>
-            <li
-                className='md:hidden w-full'
-            >
-                <NavLink
-                to="/explore"
-                end
-                className={({ isActive }) =>
-                    `flex gap-12 f-14 pt-14 px-16 pb-10 items-center ${
-                    isActive ? "bg-primary6 text-primary" : "text-font-fivethy"
-                    }`
-                }
-                >
-                <TbHome/>
-                <span>Explore</span>
-                </NavLink>
-            </li>
-            <li
-                className='md:hidden'
-            >
-                <NavLink
-                to="/events"
-                end
-                className={({ isActive }) =>
-                    `flex gap-12 f-14 pt-14 px-16 pb-10 items-center ${
-                    isActive ? "bg-primary6 text-primary" : "text-font-fivethy"
-                    }`
-                }
-                >
-                <MdOutlineExplore/>
-                <span>Events</span>
-                </NavLink>
-            </li>
-        
-            <li
-                className='md:hidden'
-            >
-                <NavLink
-                to="/communities"
-                end
-                className={({ isActive }) =>
-                    `flex gap-12 f-14 pt-14 px-16 pb-10 items-center ${
-                    isActive ? "bg-primary6 text-primary" : "text-font-fivethy"
-                    }`
-                }
-                >
-                <RxPeople/>
-                <span>Communities</span>
-                </NavLink>
-            </li>
-            
-            {user.isActive && (<li
-                className='md:hidden'
-            >
-                <NavLink
-                to={`/myevents/${user.id}`}
-                end
-                className={({ isActive }) =>
-                    `flex gap-12 f-14 pt-14 px-16 pb-10 items-center ${
-                    isActive ? "bg-primary6 text-primary" : "text-font-fivethy"
-                    }`
-                }
-                >
-                <LuCalendar/>
-                <span>My Events</span>
-                </NavLink>
-            </li>)}
+        </div> 
+        : <span className={` ${isDark 
+            ? "" 
+            : "text-font-secondary text-xs pl-16 pr-30 pt-10"}
+        `}>Browsing as guest</span>
+        }
 
-            { user.isActive && <li>
-                <NavLink
-                to={`/myprofile/${user.id}`}
-                end
-                className={({ isActive }) =>
-                    `flex gap-12 f-14 pt-14 px-16 pb-10 items-center ${
-                    isActive ? "bg-primary6 text-primary" : "text-font-fivethy"
-                    }`
+        <ul className={` ${isDark 
+            ? "" 
+            : "flex flex-col"}
+        `}>
+            {listNavbar.map((m,i)=> {
+                if(m.isShow) {
+                    const IconComponent = m.icon
+                    return (
+                        <NavLink
+                            key={i}
+                            to={m.link} 
+                            className={({isActive}) =>` ${isDark 
+                            ? "" 
+                            : "md:hidden w-full"}
+                            ${isActive ? "bg-primary6 text-primary" : "text-font-fivethy"}
+                        `}>
+                            <li
+                            className={` ${isDark 
+                                ? "" 
+                                : "flex gap-12 f-14 pt-14 px-16 pb-10 items-center"}
+                            `}>
+                                <IconComponent />
+                                <span>{m.navbar}</span>
+                            </li>
+                        </NavLink>
+                    )
                 }
-                >
-                <GoPerson/>
-                <span>My Profile</span>
+            })}
+
+            { actived.role === "organizer" &&
+                <NavLink
+                    to={"#"} 
+                    className={ ({isActive}) => `${isDark 
+                    ? "" 
+                    : "md:hidden w-full"}
+                    ${isActive ? "bg-primary6 text-primary" : "text-font-fivethy"}
+                `}>
+                    <li className={` ${isDark 
+                        ? "" 
+                        : "flex gap-12 f-14 pt-14 px-16 pb-10 items-center"}
+                    `}>
+                        <RxDashboard/>
+                        <span>Dashboard</span>
+                    </li>
                 </NavLink>
-            </li>}
+            }
+
+            { actived.role === "admin" &&
+                <NavLink
+                    to={"#"} 
+                    className={ ({isActive}) => `${isDark 
+                    ? "" 
+                    : "md:hidden w-full"}
+                    ${isActive ? "bg-primary6 text-primary" : "text-font-fivethy"}
+                `}>
+                    <li className={` ${isDark 
+                        ? "" 
+                        : "flex gap-12 f-14 pt-14 px-16 pb-10 items-center"}
+                    `}>
+                        <FiShield/>
+                        <span>Admin</span>
+                    </li>
+                </NavLink>
+            }
+ 
             <li
-                onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    setShowNav(!showNav);
-
-                    if (nav.auth === "Sign In") {
-                        navigate("/auth/signin");
-                    } else {
-                        remove("actived");
-                        setUser({});
-                        setNav((prevNav) => ({
-                            ...prevNav,
-                            auth: "Sign In"
-                        }));
-                    }
-                }}
-
-                className={`${user.isActive ? "text-font-error" : "text-primary"} flex gap-12 px-16 py-10 items-center f-14 font-bold bg-primary6 cursor-pointer`}>
-                {user.isActive ? <LuLogOut/> : <GoPerson/>}
-                <span>{nav.auth}</span>
+                className={`${actived.isActive ? "text-font-error" : "text-primary"} flex gap-12 px-16 py-10 items-center f-14 font-bold bg-primary6 cursor-pointer`}>
+                {actived.isActive ? <LuLogOut/> : <GoPerson/>}
+                {actived.isActive 
+                    ? <span
+                        onClick={(e)=> {
+                            e.stopPropagation()
+                            setShowNav(!showNav)
+                            dispatch(logout())
+                        }}
+                    >Sign Out</span>
+                    : <span
+                        onClick={(e)=> {
+                            e.stopPropagation()
+                            setShowNav(!showNav)
+                            navigate("/auth/signin")
+                        }}
+                    >Sign In</span>
+                }
             </li>
         </ul>
     </div>
-    </>
   )
 }
 
