@@ -1,45 +1,42 @@
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router"
 
-function CreateNavbar ({user}) {
-    const listNavbar = [
-      { navbar: "Explore", link: "/explore" },
-      { navbar: "Events", link: "/events" },
-      { navbar: "Communities", link: "/communities" },
-      { navbar: "My Events", link: "/myevents" },
-    ];
+function CreateNavbar ({props}) {
+    const {listNavbar} = props
+    const {isDark} = useSelector(state => state.eventHub)
     
-    const listNavbarGuest = [
-      { navbar: "Explore", link: "/explore" },
-      { navbar: "Events", link: "/events" },
-      { navbar: "Communities", link: "/communities" },
-    ];
-    
-    const currentNavbar = 
-    user.role === "admin" || user.role === "attendee" || user.role === "organizer"
-    ? listNavbar
-    : listNavbarGuest;
-    
-    return (<nav>
-      <ul 
-        className={`
-          hidden md:flex w-full
-
-          `}
-      >
-        {currentNavbar.map((n, i) => {
-          return (
-            <NavLink 
-            className={({isActive}) => ` ${isActive ? "text-primary bg-primary8" : "text-font-primary"}
-              py-6 px-12 text-font-primary font-medium my-center round-8`}
-              key={i}
-              to={n.link}
-            >
-              <li 
-                className="f-14"
-                >{n.navbar}</li>
-            </NavLink>
-          );
-        })}
+    return (
+    <nav className={` ${isDark 
+      ? "" 
+      : ""}
+    `}>
+      <ul className={` ${isDark 
+        ? "" 
+        : "hidden md:flex w-full"}
+      `}>
+        {listNavbar.map((n,i) => {
+          if (n.isDekstop && n.isShow){
+            return (
+              <NavLink 
+                key={i}
+                to={n.link}
+                className={({isActive})=> ` ${isDark 
+                  ? "" 
+                  : "py-6 px-12 text-font-primary font-medium my-center round-8"}
+                  ${isActive 
+                    ? "text-primary bg-primary8" 
+                    : "text-font-primary"}
+              `}>
+                <li className={` ${isDark 
+                  ? "" 
+                  : "f-14"}
+                `}>{n.navbar}
+                </li>
+              </NavLink>
+            )
+          }
+        })
+        }
       </ul>
     </nav>
   );
