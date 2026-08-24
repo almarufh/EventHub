@@ -4,18 +4,19 @@ import { Link, useNavigate} from 'react-router'
 import { LuEye, LuEyeClosed } from 'react-icons/lu'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, useStore } from 'react-redux'
 import { checkEmail, login } from '../../redux/slice/user.js'
 
 function SignIn() {
   // Redux Persist
   const dispatch = useDispatch()
+  const store = useStore()
   const state = useSelector(state => state.eventHub)
-  const {isExist, message, data} = state.userExist
+  const {data} = state.userExist
   const {isActive, message: status} = state.actived
 
   // state
-  const {register, handleSubmit, formState: { errors }} = useForm()
+  const {register, handleSubmit, formState: { errors }} = useForm({mode: "onBlur"})
   const [show, setShow] = useState({value: false, type: "password"})
 
   // navigate
@@ -89,9 +90,10 @@ function SignIn() {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: "Format email tidak valid"
                 },
-                validate: (value) => {
+                validate: async (value) => {
                   dispatch(checkEmail(value))
-                  if(!isExist){
+                  const { isExist: exist, message } = store.getState().eventHub.userExist
+                  if(!exist){
                     return message
                   }
                 }
@@ -138,7 +140,7 @@ function SignIn() {
             <span className={`${errors?.password ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.password?.message || "error"}</span>
           </div>
 
-          <span className={`${isActive?.password ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{isActive || "error"}</span>
+          <span className={`${isActive?.password ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{ status || "error"}</span>
 
           <button
             className='bg-primary py-12 w-full my-center rounded-lg f-14 text-light font-semibold cursor-pointer'
