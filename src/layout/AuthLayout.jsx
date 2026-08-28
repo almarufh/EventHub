@@ -6,7 +6,7 @@ function AuthLayout() {
   const data = useSelector(state => state.eventHub)
 
   if (data?.actived?.isActive) {
-    return <Navigate to="/explore" replace />
+    return <Navigate to="/" replace />
   }
   
   return (
