@@ -1,25 +1,16 @@
-import React, { useEffect, useState } from 'react'
 import star from '../assets/icons/Sparkles.svg'
-import { Outlet } from 'react-router'
 import { LuSearch } from 'react-icons/lu'
 import { FaArrowRight } from 'react-icons/fa'
-import { CiBookmark, CiCalendar } from 'react-icons/ci'
-import { PiMapPinLight } from 'react-icons/pi'
-import { GoPeople } from 'react-icons/go'
 import { FaArrowTrendUp } from 'react-icons/fa6'
 import CardEvents from '../components/events/CardEvents'
-import { load } from '../utils/helper/storage'
 import CardCommunities from '../components/communities/CardCommunities'
+import { useEventHub } from '../hooks/useEventHub'
+import NotLogin from '../modals/NotLogin'
+import { useState } from 'react'
 
 function Explore() {
-  const [user, setUser] = useState()
-
-  useEffect(()=> {
-    const active = load("actived")
-    if(active) {
-      setUser(active)
-    }
-  },[])
+  const { actived } = useEventHub()
+  const [modalAuth, setModalAuth] = useState(false)
 
   return (
     <main className='flex flex-col w-full items-center'>
@@ -64,7 +55,7 @@ function Explore() {
       {/* GUEST */}
       
       {/* Discover events that interest you */}
-      {true && <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
+      {actived.role === "guest" && <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
         
         <div className="col-span-1 md:col-span-3 pt-40">
           <div className="flex items-center justify-between">
@@ -76,14 +67,14 @@ function Explore() {
           </div>
         </div>
 
-        <CardEvents category={"Technology"} limit={6} />
+        <CardEvents category={"Technology"} limit={6} modal={{setModalAuth}} />
 
       </section>} 
 
       {/* ATTENDY */}      
       {/* Because you joined Bandung Go Community */}
 
-      {false && <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
+      {actived.role === "attendee" || actived.role === "admin" || actived.role === "organizer" && <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
         
         <div className="col-span-1 md:col-span-3 pt-40">
           <div className="flex gap-4 md:gap-8 items-center">
@@ -99,14 +90,14 @@ function Explore() {
           </div>
         </div>
 
-        <CardEvents category={"recommended_events"} limit={3} />
+        <CardEvents category={"org-1"} limit={3} modal={{setModalAuth}} />
 
       </section>}      
 
 
       {/* All Upcoming Events */}
 
-      {false && <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
+      {actived.role === "attendee" || actived.role === "admin" || actived.role === "organizer" && <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
         
         <div className="col-span-1 md:col-span-3 pt-40">
           <div className="flex items-center justify-between gap-2">
@@ -118,7 +109,7 @@ function Explore() {
           </div>
         </div>
 
-        <CardEvents category={"upcoming_events"} limit={3} />
+        <CardEvents category={"upcoming_events"} limit={3} modal={{setModalAuth}} />
 
       </section>}
 
@@ -136,7 +127,7 @@ function Explore() {
           </div>
         </div>
 
-        <CardCommunities limit={4}/>
+        <CardCommunities limit={4} modal={{setModalAuth}}/>
 
         {/* <article className='flex gap-12 flex-col border border-border-header round-8 overflow-hidden'>
           <div className="">
@@ -224,7 +215,8 @@ function Explore() {
 
         </article>
       </section>
-
+      {/* modals */}
+      {modalAuth && <NotLogin modal={{setModalAuth}}/>}
     </main>
   )
 }
