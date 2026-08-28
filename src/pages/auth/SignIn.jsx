@@ -36,7 +36,7 @@ function SignIn() {
     dispatch(login(e))
     if(isActive) {
       dispatch(checkEmail(null))
-      navigate("/explore")
+      navigate("/")
     }
   }
 
@@ -130,7 +130,7 @@ function SignIn() {
               }
               )}
                 id="password"
-                placeholder="********"
+                placeholder="Enter your password"
               />
               <div 
                 onClick={passwordShow}
@@ -151,7 +151,7 @@ function SignIn() {
           <span className='text-xs text-font-secondary'>Just browsing?</span>
           <Link
             className='text-xs text-font-secondary underline'
-            to="/explore"
+            to="/"
           >Continue as guest →</Link>
         </div>
 
