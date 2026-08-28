@@ -1,18 +1,23 @@
 import { NavLink, Outlet, useParams } from "react-router"
-import { load } from "../../utils/helper/storage"
-import { getUserById } from "../../utils/user"
 import { LuMapPin } from "react-icons/lu"
 import { CiCalendar } from "react-icons/ci"
 import { FiEdit2 } from "react-icons/fi"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { IoClose } from "react-icons/io5"
+import { useDispatch, useSelector } from "react-redux"
+import { checkEmail } from "../../redux/slice/user"
 
 function MyProfile() {
   const {id} = useParams()
-  const actived = load("actived")
-  const user = getUserById(actived.id)
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    dispatch(checkEmail(id))
+  },[dispatch,id])
+  
+  const {userExist} = useSelector(state => state.eventHub)
+  const {data: user} = userExist
   const [modal, setModal] = useState(false)
-  console.log(user)
   const tab = [
       {
           name: "Events", 
@@ -29,10 +34,18 @@ function MyProfile() {
   ]
   return (
     <main className="mt-75 px-16">
-      {modal && <section className="fixed w-full h-screen bg-black/10 inset-0 z-50 flex items-center justify-center">
+      {modal && 
+        <section 
+          // onClick={(e)=> {
+          //   e.preventDefault()
+          //   e.stopPropagation()
+          //   setModal(!modal)
+          // }}
+          className="fixed w-full h-screen bg-black/10 inset-0 z-50 flex items-center justify-center">
           <div className="bg-light text-dark-primary max-w-md min-w-sm rounded-2xl border-border-header relative">
             <IoClose  
-              onClick={()=> {
+              onClick={(e)=> {
+                e.preventDefault()
                 setModal(!modal)
               }}
               className="absolute right-10 top-10 hover:border hover:rounded-full hover:text-font-error cursor-pointer"
@@ -46,7 +59,7 @@ function MyProfile() {
                 <div className="flex justify-center mt-12">
                   <label htmlFor="image" className="cursor-pointer">
                     <div className="w-100 h-100 rounded-full border border-border-header">
-                      {/* <img src="" alt="#" className="#" /> */}
+                      {/* <img src="#" alt="#" className="#" /> */}
                     </div>
                     <input type="file" id="image" className="hidden" />
                   </label>
@@ -82,7 +95,13 @@ function MyProfile() {
                   />
                 </div>
 
-                <div className="flex gap-5 my-24 justify-end">
+                <div 
+                  onClick={(e)=> {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setModal(!modal)
+                  }}
+                  className="flex gap-5 my-24 justify-end">
                   <span className="text-dark-primary bg-border-header px-16 py-8 round-8 f-14 cursor-pointer">Cancel</span>
                   <span className="text-light bg-primary px-16 py-8 round-8 f-14 cursor-pointer">Save Changes</span>
                 </div>
@@ -93,7 +112,7 @@ function MyProfile() {
 
         <div className="flex gap-20">
           <div className="h-80 w-80 border border-border-header rounded-xl">
-            <img src="" alt="" className="" />
+            <img src="#" alt="#" className="" />
           </div>
 
           <div className="flex flex-col justify-between items-start w-full">
