@@ -30,7 +30,7 @@ function DetailEvent() {
 
   return (
     <div className="flex flex-col items-center w-full h-screen pt-56">
-      <Link to="/explore" className="flex gap-5 items-center py-12 w-9/10">
+      <Link to="/" className="flex gap-5 items-center py-12 w-9/10">
         <FaArrowLeft className="text-font-forthy" />
         <span className="text-font-forthy f-14">Back to Events</span>
       </Link>
