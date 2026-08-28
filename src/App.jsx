@@ -23,11 +23,20 @@ import ProfileEvents from "./pages/myprofile/ProfileEvents.jsx";
 import ProfileComunities from "./pages/myprofile/ProfileComunities.jsx";
 import ProfileSaved from "./pages/myprofile/ProfileSaved.jsx";
 import DashboarLayout from "./layout/DashboarLayout.jsx";
-import AdminDashboar from "./pages/dashboard/AdminDashboar.jsx";
-import OrganizerDashboard from "./pages/dashboard/OrganizerDashboard.jsx";
+import AdminDashboar from "./pages/dashboard/admin/AdminDashboar.jsx";
+import OrganizerDashboard from "./pages/dashboard/organizer/OrganizerDashboard.jsx";
 import NotificationLayout from "./layout/NotificationLayout.jsx";
 import AllNotifications from "./pages/notification/AllNotifications.jsx";
 import UnreadNotifications from "./pages/notification/UnreadNotifications.jsx";
+import NotFound from "./pages/NotFound.jsx";
+import OverviewDasboardAdmin from "./pages/dashboard/admin/OverviewDasboardAdmin.jsx";
+import UsersDashbooardAdmin from "./pages/dashboard/admin/UsersDashbooardAdmin.jsx";
+import EventsDasboardAdmin from "./pages/dashboard/admin/EventsDasboardAdmin.jsx";
+import CommunitiesDashboardAdmin from "./pages/dashboard/admin/CommunitiesDashboardAdmin.jsx";
+import CreateEvents from "./pages/dashboard/organizer/CreateEvents.jsx";
+import Create1 from "./pages/dashboard/organizer/Create1.jsx";
+import Create2 from "./pages/dashboard/organizer/Create2.jsx";
+import Create3 from "./pages/dashboard/organizer/Create3.jsx";
 
 let router = createBrowserRouter([
   {
@@ -37,6 +46,10 @@ let router = createBrowserRouter([
       {
         index: true,
         element: <Explore/>
+      },
+      {
+        path: "not-found",
+        element: <NotFound/>
       },
       {
         path: 'communities',
@@ -115,6 +128,24 @@ let router = createBrowserRouter([
         ]
       },
       {
+        path: "event",
+        element: <CreateEvents/>,
+        children: [
+          {
+            path: "1",
+            element: <Create1/>
+          },
+          {
+            path: "2",
+            element: <Create2/>
+          },
+          {
+            path: "3",
+            element: <Create3/>
+          }
+        ]
+      },
+      {
         path: "myprofile",
         element: <MyProfile/>,
         children: [
@@ -151,10 +182,32 @@ let router = createBrowserRouter([
         children: [
           {
             path: "admin/:id",
-            element: <AdminDashboar/>
+            element: <AdminDashboar/>,
+            children: [
+              {
+                index: true,
+                element: <Navigate to="overview" replace />
+              },
+              {
+                path: "overview",
+                element: <OverviewDasboardAdmin/>
+              },
+              { 
+                path: "users",
+                element: <UsersDashbooardAdmin/>
+              },
+              {
+                path: "events",
+                element: <EventsDasboardAdmin/>
+              },
+              {
+                path: "communities",
+                element: <CommunitiesDashboardAdmin/>
+              }
+            ]
           },
           {
-            path: "dashboard/:id",
+            path: "organizer/:id",
             element: <OrganizerDashboard/>
           }
         ]
@@ -201,10 +254,10 @@ let router = createBrowserRouter([
       }
     ]
   },
-  {
-    path: "*",
-    element: <Navigate to='explore' replace />
-  }
+  // {
+  //   path: "*",
+  //   element: <Navigate to='/not-found' replace />
+  // }
 ])
 
 function App () {
