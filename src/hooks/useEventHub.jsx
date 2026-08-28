@@ -7,6 +7,7 @@ import {
   checkEmail,
   fetchData,
   getAllData,
+  filterEvents
 } from "../redux/slice/user.js";
 
 export function useEventHub() {
@@ -17,7 +18,7 @@ export function useEventHub() {
   const userExist = useSelector((state) => state.eventHub.userExist);
   const isDark = useSelector((state) => state.eventHub.isDark);
   const data = useSelector((state) => state.eventHub.data);
-  const filtered = useSelector((state) => state.eventHub.filterd);
+  const filtered = useSelector((state) => state.eventHub.filtered);
 
   const handleRegister = (userData) => {
     dispatch(registerUser(userData));
@@ -38,9 +39,9 @@ export function useEventHub() {
   const handleCheckEmail = (identifier) => {
     dispatch(checkEmail(identifier));
   };
-
+  
   const handleFilterEvents = (identifier) => {
-    dispatch(checkEmail(identifier));
+    dispatch(filterEvents(identifier));
   };
 
   return {
