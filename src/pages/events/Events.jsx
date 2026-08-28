@@ -2,9 +2,11 @@ import { LuSearch } from 'react-icons/lu'
 import { TbListTree } from 'react-icons/tb'
 import { useState } from 'react'
 import CardEvents from '../../components/events/CardEvents.jsx'
+import { useEventHub } from '../../hooks/useEventHub.jsx'
 
 function Events() {
-  const [total, setTotal] = useState(0)
+  const {filtered} = useEventHub()
+
   const [btnFilter, setBtnFilter] = useState(false)
   return (
     <main className='flex flex-col items-center pt-64 md:pt-80'>
@@ -29,7 +31,7 @@ function Events() {
       <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
         <div className="col-span-1 md:col-span-3 pt-20">
           <div className="flex items-center gap-5">
-            <span className='font-bold f-14 text-dark'>{total}</span>
+            <span className='font-bold f-14 text-dark'>{filtered?.length || 0}</span>
             <span className='f-14 text-dark-primary'>events found</span>
           </div>
         </div>
@@ -83,7 +85,7 @@ function Events() {
 
         </div>}
 
-        <CardEvents setTotal={setTotal} />        
+        <CardEvents />        
 
       </section>
 
