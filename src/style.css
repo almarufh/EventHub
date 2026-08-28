@@ -19,6 +19,7 @@
     --color-primary6: #FF5F220F;
     --color-primary8: #FF5F2214;
     --color-secondary: #33B570;
+    --color-bg-secondary: #33B5701A;
     --color-thirty: #F4F4F5;
 
     --color-hijau10: #33B5701A;
@@ -72,4 +73,8 @@
 
 @utility f-20 {
     font-size: 20px;
+}
+
+@utility f-9 {
+    font-size: 9px;
 }
