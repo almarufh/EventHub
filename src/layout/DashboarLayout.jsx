@@ -8,7 +8,7 @@ function DashboarLayout() {
 
     useEffect(()=> {
         if (actived.role === "admin") {
-            navigate(`/dashboard/admin/${actived.id}`)
+            navigate(`/dashboard/admin/${actived.id}/overview`)
         } else if (actived.role === "organizer") {
             navigate(`/dashboard/organizer/${actived.id}`)
         } else {
