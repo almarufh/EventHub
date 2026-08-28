@@ -24,8 +24,9 @@ function CreateNavbar ({props}) {
                   ? "" 
                   : "py-6 px-12 text-font-primary font-medium my-center round-8"}
                   ${isActive 
-                    ? "text-primary bg-primary8" 
+                    ? "text-primary bg-primary6" 
                     : "text-font-primary"}
+                    hover:bg-primary6
               `}>
                 <li className={` ${isDark 
                   ? "" 
