@@ -1,11 +1,24 @@
+import { useNavigate } from "react-router"
+import { useEventHub } from "../../hooks/useEventHub"
+
 function Logo ({target}) {
+  const {isDark} = useEventHub()
+  const navigate = useNavigate()
   return (
-    <div 
-      className="flex items-center gap-8 round-8 pr-32"
-    >
+    <div
+      onClick={()=> {
+        navigate("/")
+      }}
+      className={`${isDark 
+        ? "" 
+        : "flex items-center gap-8 round-8 pr-32"}
+        cursor-pointer
+    `}>
       <span
-        className='bg-primary text-md p-4 h-28 w-28 my-center round-8 f-14 font-bold text-light'
-      >E</span>
+        className={` ${isDark 
+          ? "" 
+          : "bg-primary text-md p-4 h-28 w-28 my-center round-8 f-14 font-bold text-light"}
+      `}>E</span>
       <span
         className={
           `${target === "auth" 
