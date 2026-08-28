@@ -1,6 +1,6 @@
 import { useParams } from 'react-router'
 import { getMemberCommunity } from '../../database/data'
-import CreateUser from '../../components/CreateUser.jsx'
+import CreateUser from '../../components/dashboard/CreateUser.jsx'
 
 function MembersCommunities() {
   const {id} = useParams()
