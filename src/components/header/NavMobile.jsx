@@ -1,15 +1,14 @@
 import { GoPerson } from 'react-icons/go'
 import { LuLogOut } from 'react-icons/lu'
 import { NavLink, useNavigate } from 'react-router'
-import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../../redux/slice/user'
 import { RxDashboard } from 'react-icons/rx'
 import { FiShield } from 'react-icons/fi'
+import { useEventHub } from '../../hooks/useEventHub'
 
-function NavMobile({props}) {
+function NavMobile({props, modal}) {
+    const {dispatch, isDark, actived, userExist} = useEventHub()
     const {listNavbar, setShowNav, showNav} = props
-    const dispatch = useDispatch()
-    const { isDark, actived, userExist } = useSelector(state => state.eventHub)
 
     const {name, email} = userExist.data
     const navigate = useNavigate()
@@ -67,7 +66,8 @@ function NavMobile({props}) {
                             to={m.link} 
                             className={({isActive}) =>` ${isDark 
                             ? "" 
-                            : "md:hidden w-full"}
+                            : "w-full"}
+                            ${m.navbar === "My Profile"  ? "md:flex" : "md:hidden" }
                             ${isActive ? "bg-primary6 text-primary" : "text-font-fivethy"}
                         `}>
                             <li
@@ -85,7 +85,7 @@ function NavMobile({props}) {
 
             { actived.role === "organizer" &&
                 <NavLink
-                    to={"#"} 
+                    to={`/dashboard/organizer/${actived.id}`} 
                     className={ ({isActive}) => `${isDark 
                     ? "" 
                     : "md:hidden w-full"}
@@ -103,7 +103,7 @@ function NavMobile({props}) {
 
             { actived.role === "admin" &&
                 <NavLink
-                    to={"#"} 
+                    to={`/dashboard/admin/${actived.id}`} 
                     className={ ({isActive}) => `${isDark 
                     ? "" 
                     : "md:hidden w-full"}
@@ -127,7 +127,8 @@ function NavMobile({props}) {
                         onClick={(e)=> {
                             e.stopPropagation()
                             setShowNav(!showNav)
-                            dispatch(logout())
+                            modal.setConfirmLogout(true)
+                            // dispatch(logout())
                         }}
                     >Sign Out</span>
                     : <span
