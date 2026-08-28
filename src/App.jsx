@@ -37,6 +37,7 @@ import CreateEvents from "./pages/dashboard/organizer/CreateEvents.jsx";
 import Create1 from "./pages/dashboard/organizer/Create1.jsx";
 import Create2 from "./pages/dashboard/organizer/Create2.jsx";
 import Create3 from "./pages/dashboard/organizer/Create3.jsx";
+import SuccessCreateEvent from "./pages/dashboard/organizer/SuccessCreateEvent.jsx";
 
 let router = createBrowserRouter([
   {
@@ -142,6 +143,10 @@ let router = createBrowserRouter([
           {
             path: "3",
             element: <Create3/>
+          },
+          {
+            path: "success",
+            element: <SuccessCreateEvent/>
           }
         ]
       },
