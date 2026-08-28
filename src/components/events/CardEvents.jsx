@@ -3,31 +3,39 @@ import { PiMapPinLight } from "react-icons/pi";
 import { GoPeople } from "react-icons/go";
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
-import { eventsByCategory } from "../../database/data.js";
+import { useEventHub } from "../../hooks/useEventHub.jsx";
 
-function CardEvents({ category, community, limit, setTotal }) {
+function CardEvents({ category, community, limit, modal}) {
+  
+    const {handleFilterEvents, filtered, data, getAllData, dispatch} = useEventHub()
+
     const payload = {
       category: category || null,
       community: community || null,
-      limit: limit || null
+      limit: limit || null,
+      events: data.events
     }
-
-    const events = eventsByCategory(payload);
-
-    useEffect(() => {
-      if (events && setTotal) {
-        setTotal(events.length);
-      }
-    }, [events, setTotal]);
     
     const [btn, setBtn] = useState({
       status: false,
       value: "Join Event"
     })
 
+    useEffect(()=> {
+      (()=>{
+        if(data.events.length < 1) {
+          dispatch(getAllData("/data/eventsData.json"))
+          return
+        }
+        handleFilterEvents(payload)
+      })()
+    }, [])
+
+    // const events = filtered || data.events
+
     return (
         <>
-            {events.map((res, index) => {
+            {filtered?.map((res, index) => {
                 const attendeesCount = res.attendees || 0;
                 const capacityCount = res.capacity || 100;
                 const percentage = Math.min(Math.round((attendeesCount / capacityCount) * 100), 100);
@@ -98,15 +106,16 @@ function CardEvents({ category, community, limit, setTotal }) {
                             <button 
                               onClick={(e)=> {
                                 e.preventDefault()
-                                setBtn((prevBtn)=> {
-                                  return {
-                                    ...prevBtn,
-                                    ...{
-                                      status: !prevBtn.status,
-                                      value: prevBtn.value === "Join Event" ? "Registered" : "Join Event"
-                                    }
-                                  }
-                                })
+                                modal.setModalAuth(true)
+                                // setBtn((prevBtn)=> {
+                                //   return {
+                                //     ...prevBtn,
+                                //     ...{
+                                //       status: !prevBtn.status,
+                                //       value: prevBtn.value === "Join Event" ? "Registered" : "Join Event"
+                                //     }
+                                //   }
+                                // })
                               }}
                               className={` ${ btn.status ? "bg-secondary" : "bg-primary"} hover:bg-primary-dark transition py-10 px-12 f-14 text-white w-full text-center font-medium rounded-lg cursor-pointer`}>
                               {btn.value}
