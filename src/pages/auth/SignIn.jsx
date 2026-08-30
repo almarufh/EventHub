@@ -4,16 +4,19 @@ import { Link, useNavigate} from 'react-router'
 import { LuEye, LuEyeClosed } from 'react-icons/lu'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector, useStore } from 'react-redux'
-import { checkEmail, login } from '../../redux/slice/user.js'
+import { useRedux } from '../../hooks/useRedux.jsx'
+import { authLogin, deleteMessage } from '../../redux/slice/auth.js'
 
 function SignIn() {
   // Redux Persist
-  const dispatch = useDispatch()
-  const store = useStore()
-  const state = useSelector(state => state.eventHub)
-  const {data} = state.userExist
-  const {isActive, message: status} = state.actived
+  const {
+    state,
+    dispatch,
+    auth: {
+      isError,
+      message,
+    }
+  } = useRedux()
 
   // state
   const {register, handleSubmit, formState: { errors }} = useForm({mode: "onBlur"})
@@ -32,11 +35,14 @@ function SignIn() {
     }));
   };
 
-  function sign(e){
-    dispatch(login(e))
-    if(isActive) {
-      dispatch(checkEmail(null))
-      navigate("/")
+  async function sign(e) {
+    try {
+      await dispatch(authLogin(e)).unwrap();
+      if (state.getState().auth.actived.isActive) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Login gagal:", error);
     }
   }
 
@@ -84,18 +90,14 @@ function SignIn() {
             <input 
               className='bg-light border border-border-header py-10 px-12 f-14 text-font-secondary outline-none rounded-lg'
               type="email" 
+              onInput={()=> {
+                dispatch(deleteMessage())
+              }}
               {...register("email", { 
                 required: "Email is required",
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: "Format email tidak valid"
-                },
-                validate: async (value) => {
-                  dispatch(checkEmail(value))
-                  const { isExist: exist, message } = store.getState().eventHub.userExist
-                  if(!exist){
-                    return message
-                  }
                 }
               })} 
               id="email" 
@@ -123,9 +125,6 @@ function SignIn() {
                   required: "Password is required", minLength:{
                   value: 8,
                   message: "Password minimal 8 karakter"
-                },
-                validate: (value)=>{
-                  return btoa(data.password) === value || "Wrong Password"
                 }
               }
               )}
@@ -138,12 +137,12 @@ function SignIn() {
               >{show.value ? (<LuEye/>) : (<LuEyeClosed/>)}</div>
             </div>
             <span className={`${errors?.password ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.password?.message || "error"}</span>
+            <span className={`${isError ? "opacity-100" : "opacity-0"} text-font-error text-xs flex justify-center`}>{ message || "error"}</span>
           </div>
 
-          <span className={`${isActive?.password ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{ status || "error"}</span>
 
           <button
-            className='bg-primary py-12 w-full my-center rounded-lg f-14 text-light font-semibold cursor-pointer'
+            className='bg-primary py-12 w-full my-center rounded-lg f-14 text-light font-semibold cursor-pointer -mt-10'
           >Sign in</button>
         </form>
 
