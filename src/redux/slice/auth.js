@@ -1,26 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
-    isActive: null,
-    user: {
-        // "id": "user-1",
-        // "name": "Arif Wibowo",
-        // "email": "arif.wibowo@techhub.id",
-        // "location": "Jakarta",
-        // "bio": "Lead Event Coordinator di TechHub ID dengan fokus pada seminar teknologi nasional.",
-        // "isAttendee": false,
-        // "status": "active",
-        // "profesionals": {
-        //     "role": "organizer",
-        //     "job": "Event Program Manager",
-        //     "office": "TechHub ID"
-        // },
-        // "communitys": [],
-        // "events": [],
-        // "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
-        // "createdAt": "1787742224923",
-        // "updatedAt": "1787742224923"
+    actived: {
+        isActive: false,
+        auth: null
     },
+    user: {},
     isLoading: false,
     isSuccess: false,
     isError: false,
@@ -33,12 +18,13 @@ export const authLogin = createAsyncThunk(
         try {
             const state = getState()
             const users = state.users.data
+            console.log(users)
             const user = users.find((e)=> e.email === payload.email)
-            if(user === -1) {
-                return rejectWithValue("email atau password salah!")
+            if(!user) {
+                return rejectWithValue("Email atau password salah!")
             }
             if(user.password !== btoa(payload.password)) {
-                return rejectWithValue("email atau password salah!")
+                return rejectWithValue(`Email atau password salah!`)
             }
             return user
         } catch (error) {
@@ -63,30 +49,52 @@ export const authLogout = createAsyncThunk(
 const auth = createSlice({
     name: "auth",
     initialState,
-    reducers: {},
+    reducers: {
+        deleteMessage: (state) => {
+            state.isLoading = true
+            state.isSuccess = false
+            state.isError = false
+            state.message = null
+            state.actived = {
+                isActive: false,
+                auth: null
+            }
+            state.user = {}
+        } 
+    },
     extraReducers: (builder) => {
         builder
         // Login
         .addCase(authLogin.pending, (state) => {
-            state.isLoading =true
+            state.isLoading = true
             state.isSuccess = false
             state.isError = false
-            state.message = null 
-            state.isActive = null
+            state.message = null
+            state.actived = {
+                isActive: false,
+                auth: null
+            }
             state.user = {}
         })
         .addCase(authLogin.fulfilled, (state, {payload}) => {
             state.isLoading = false
             state.isSuccess = true
             state.message = "Login succes !" 
-            state.isActive = payload.id
+            state.actived = {
+                isActive: true,
+                auth: payload.id
+            }
             state.user = payload
         })
-        .addCase(authLogin.rejected, (state) => {
+        .addCase(authLogin.rejected, (state, {payload}) => {
+            console.log("message : ", payload)
             state.isLoading = false
             state.isError = true
-            state.message = null 
-            state.isActive = null
+            state.message =  payload
+            state.actived = {
+                isActive: false,
+                auth: null
+            }
             state.user = {}
         })
         // Logout
@@ -100,7 +108,10 @@ const auth = createSlice({
             state.isLoading = false
             state.isSuccess = true
             state.message = "Logout success !"
-            state.isActive = null
+            state.actived = {
+                isActive: false,
+                auth: {}
+            }
             state.user = {}
         })
         .addCase(authLogout.rejected, (state) => {
@@ -110,5 +121,7 @@ const auth = createSlice({
         })
     }
 })
+
+export const {deleteMessage} = auth.actions
 
 export default auth.reducer
