@@ -64,7 +64,7 @@ const authPersistConfig = {
 const store = configureStore({
     reducer: {
         events: persistReducer(eventsPersistConfig, eventsReducer),
-        category: persistReducer(categoryPersistConfig, categoryReducer),
+        categorys: persistReducer(categoryPersistConfig, categoryReducer),
         discussions: persistReducer(discussionsPersistConfig, discussionsReducer),
         communities: persistReducer(communitiesPersistConfig, communitiesReducer),
         users: persistReducer(usersPersistConfig, usersReducer),
