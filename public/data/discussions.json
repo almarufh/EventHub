@@ -1,0 +1,13 @@
+[
+    { 
+        "id": "dcs-1",
+        "userId": "user-1",
+        "from" : {
+            "type": "event",
+            "id": "evt-1"
+        },
+        "message": "Yes! The afternoon session is entirely hands-on. Bring your laptop with Go 1.22+ installed.",
+        "createdAt": "1787742224923",
+        "updatedAt": "1787742224923"
+    }
+]
