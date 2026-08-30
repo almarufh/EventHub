@@ -1,15 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState  = {
     user: {
         users: [
-            {
-                id: "1787470403207",
-                email: "hidayatmaruf99@gmail.com",
-                name: "alma'ruf hidayat",
-                password: "12345678",
-                role: "attendee"
-            }
+            // {
+            //     id: "1787470403207",
+            //     email: "hidayatmaruf99@gmail.com",
+            //     name: "alma'ruf hidayat",
+            //     password: "12345678",
+            //     role: "attendee"
+            // } 
         ],
         isLoading: false,
         isSuccess: false,
@@ -28,12 +28,50 @@ const initialState  = {
         message: null,
         data: {}
     },
+    data: {
+        organizers: [],
+        speakers: [],
+        communityMembers: [],
+        members: [],
+        communities: [],
+        events: [],
+        isPending: false,
+        isSuccess: false,
+        isError: false,
+        message: null,
+    },
+    filtered: [],
     isDark: false,
-    isPending: false,
-    isSuccess: false,
-    isError: false,
-    message: null,
 }
+
+export function fetchData(url) {
+  return new Promise((resolve, reject) => {
+    setTimeout(async () => {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Gagal mengambil data');
+        }
+        const data = await response.json();
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    }, 1000);
+  });
+}
+
+export const getAllData = createAsyncThunk(
+    "getAllData",
+    async (url, {rejectWithValue}) => {
+        try {
+            const data = await fetchData(url)
+            return data
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
 
 const eventHub = createSlice({
     name: "eventHub",
@@ -104,8 +142,49 @@ const eventHub = createSlice({
             state.actived.id = null
             state.actived.message = null
             state.actived.role = "guest"
-        }
+        },
+        filterEvents: (state, {payload}) => {
+            const {category, community, limit} = payload
+            const events = payload.events
+            let filtered = category !== null ? events.filter((e) => {
+              return e.category.some(
+                (d)=> d.toLocaleLowerCase() === category.toLocaleLowerCase()
+              )
+            }) : events;
+        
+            filtered = community !== null ? events.filter((e) => {
+              return e.communityId.toLocaleLowerCase() === community.toLocaleLowerCase()
+            }) : filtered;
+            
+            const results = limit ? filtered.slice(0, limit) : filtered;
 
+            state.filtered = results
+        }
+    },
+    extraReducers: (builder) => {
+        builder
+        .addCase(getAllData.pending, (state) => {
+            state.data.isPending = true;
+            state.data.isSuccess = false;
+            state.data.isError = false;
+            state.data.message = null;
+        })
+        .addCase(getAllData.fulfilled, (state, action) => {
+            state.data.isPending = false;
+            state.data.isSuccess = true;
+            state.data.message = "Data berhasil dimuat";
+            state.data.organizers = action.payload.organizers || [];
+            state.data.speakers = action.payload.speakers || [];
+            state.data.communityMembers = action.payload.communityMembers || [];
+            state.data.members = action.payload.members || [];
+            state.data.communities = action.payload.communities || [];
+            state.data.events = action.payload.events || [];
+        })
+        .addCase(getAllData.rejected, (state, action) => {
+            state.data.isPending = false;
+            state.data.isError = true;
+            state.data.message = action.payload || "Terjadi kesalahan saat memuat data";
+        });
     }
 })
 
@@ -115,5 +194,6 @@ export const {
     logout,
     tglDark,
     checkEmail,
+    filterEvents
 } = eventHub.actions
 export default eventHub.reducer
