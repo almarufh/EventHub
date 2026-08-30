@@ -1,0 +1,17 @@
+[
+  { "id": "ctg-1", "title": "Technology" },
+  { "id": "ctg-2", "title": "Artificial Intelligence" },
+  { "id": "ctg-3", "title": "Backend Engineering" },
+  { "id": "ctg-4", "title": "Frontend Development" },
+  { "id": "ctg-5", "title": "Mobile Development" },
+  { "id": "ctg-6", "title": "Cloud & DevOps" },
+  { "id": "ctg-7", "title": "Cybersecurity" },
+  { "id": "ctg-8", "title": "Data Science" },
+  { "id": "ctg-9", "title": "UI/UX Design" },
+  { "id": "ctg-10", "title": "Blockchain & Web3" },
+  { "id": "ctg-11", "title": "Product Management" },
+  { "id": "ctg-12", "title": "Database Systems" },
+  { "id": "ctg-13", "title": "Quality Assurance" },
+  { "id": "ctg-14", "title": "Open Source" },
+  { "id": "ctg-15", "title": "Tech Career & Leadership" }
+]
