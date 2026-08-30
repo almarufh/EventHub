@@ -11,7 +11,7 @@ function fetchData(url) {
       } catch (error) {
         reject(error);
       }
-    }, 1000);
+    }, 3000);
   });
 }
 
