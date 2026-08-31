@@ -1,8 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import fetchData from "../../utils/helper/fetchData"
+import filter from "../../utils/helper/filterEvents"
 
 const initialState = {
     data: [],
+    filtered: [],
     isLoading: false,
     isSuccess: false,
     isError: false,
@@ -84,7 +86,12 @@ export const deleteEvents = createAsyncThunk(
 const events = createSlice({
     name: "events",
     initialState,
-    reducers: {},
+    reducers: {
+        filterEvents: (state, {payload}) => {
+            const events = state.data
+            state.filtered = filter(events, payload)
+        }
+    },
     extraReducers: (builder) => {
         builder
         // GET
@@ -172,5 +179,7 @@ const events = createSlice({
         })
     }
 })
+
+export const {filterEvents} = events.actions
 
 export default events.reducer
