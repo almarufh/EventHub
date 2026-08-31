@@ -1,20 +1,53 @@
 import { LuSearch } from 'react-icons/lu'
 import { TbListTree } from 'react-icons/tb'
-import { useState } from 'react'
 import CardEvents from '../../components/events/CardEvents.jsx'
-import { useEventHub } from '../../hooks/useEventHub.jsx'
+import { useState } from 'react'
+import { useRedux } from '../../hooks/useRedux.jsx'
+import getLocations from '../../utils/helper/getLocations.js'
+import { useSearchParams } from 'react-router'
 
 function Events() {
-  const {filtered} = useEventHub()
+  const [params, setParams] = useSearchParams()
+  const {
+    events, 
+    categorys: {data: allCategory}
+  } = useRedux()
+  const [btnFilter, setBtnFilter] = useState (false)
+  const [total, setTotal] = useState(0)
+  const [search, setSearch] = useState(params.get("search") || null)
+  const [location, setLocation] = useState(params.get("location") || null)
+  const [category, setCategory] = useState(params.get("category") || null)
+  const [sorted, setSorted] = useState(params.get("sorted") || null)
 
-  const [btnFilter, setBtnFilter] = useState(false)
+  const allLocation = getLocations(events)
+
+
+  function setQueryParams(key, value) {
+    setParams((prevQuery)=> {
+      if(value) {
+        prevQuery.set(key, value)
+      } else {
+        prevQuery.delete(key)
+      }
+      return prevQuery
+    })
+  }
+
   return (
-    <main className='flex flex-col items-center pt-64 md:pt-80'>
+    <main className='flex flex-col items-center pt-16'>
       <section className='w-full flex justify-center  border-b pb-16 border-border-header'>
         <form className='flex items-center w-9/10 gap-12'>
           <div className="flex w-full items-center py-10 px-12 gap-8 rounded-lg bg-thirty">
             <LuSearch className='text-font-secondary'/>
-            <input className='f-14 pl-3 flex flex-wrap w-full outline-none' type="text" placeholder='Search events...' />
+            <input 
+              onChange={(e)=>{
+                setQueryParams("search", e.target.value)
+                setSearch(e.target.value)
+              }}
+              className='f-14 pl-3 flex flex-wrap w-full outline-none'
+              defaultValue={params.get("search")} 
+              type="text" placeholder='Search events...' 
+            />
           </div>
           <div 
             onClick={(e)=> {
@@ -31,7 +64,7 @@ function Events() {
       <section className='grid grid-cols-1 md:grid-cols-3 w-9/10 gap-20'>
         <div className="col-span-1 md:col-span-3 pt-20">
           <div className="flex items-center gap-5">
-            <span className='font-bold f-14 text-dark'>{filtered?.length || 0}</span>
+            <span className='font-bold f-14 text-dark'>{total}</span>
             <span className='f-14 text-dark-primary'>events found</span>
           </div>
         </div>
@@ -42,14 +75,25 @@ function Events() {
           <div>
             <span className="text-xs font-semibold text-font-forthy">CATEGORY</span>
             <div className="flex flex-wrap gap-8 py-4 [&_span]:text-xs [&_span]:px-12 [&_span]:py-6 [&_span]:round-8 [&_span]:border [&_span]:border-border-header">
-              <span className="bg-primary text-light">All Categories</span>
-              <span className="">Technology</span>
-              <span className="">Design</span>
-              <span className="">Business</span>
-              <span className="">Career</span>
-              <span className="">Ai</span>
-              <span className="">Programming</span>
-              <span className="">Music</span>
+              <span 
+                className={`${(!category || category === "all") && "bg-primary text-light"} cursor-pointer`}
+                onClick={()=> {
+                  setQueryParams("category", "all")
+                  setCategory(null)
+                }}
+              >All</span>
+              {allCategory.map(res => {
+                return (
+                  <span 
+                    key={res.id}
+                    onClick={()=> {
+                      setCategory(res.id)
+                      setQueryParams("category", res.id)
+                    }}
+                    className={`${category === res.id && "bg-primary text-light"} cursor-pointer`}
+                  >{res.title}</span>
+                )
+              })}
             </div>
           </div>
 
@@ -57,35 +101,56 @@ function Events() {
           <div className='pt-10'>
             <span className="text-xs font-semibold text-font-forthy">LOCATION</span>
             <div className="flex flex-wrap gap-8 py-4 [&_span]:text-xs [&_span]:px-12 [&_span]:py-6 [&_span]:round-8 [&_span]:border [&_span]:border-border-header">
-              <span className="bg-primary text-light">All Categories</span>
-              <span className="">Technology</span>
-              <span className="">Design</span>
-              <span className="">Business</span>
-              <span className="">Career</span>
-              <span className="">Ai</span>
-              <span className="">Programming</span>
-              <span className="">Music</span>
+              <span 
+                className={`${(!location || location === "all") && "bg-primary text-light"} cursor-pointer`}
+                onClick={()=> {
+                  setQueryParams("city", "all")
+                  setLocation(null)
+                }}
+              >All Locations</span>
+              {allLocation.map((res, idx)=> {
+                return (
+                  <span
+                    className={`${location === res && "bg-primary text-light"} cursor-pointer`}
+                    key={idx}
+                    onClick={()=>{
+                      setLocation(res)
+                      setQueryParams("city", res)
+                    }}
+                  >{res}</span>
+                )
+              })}
             </div>
           </div>
 
-          {/* Location */}
+          {/* Sort By */}
           <div className='pt-10'>
             <span className="text-xs font-semibold text-font-forthy">SORT BY</span>
             <div className="flex flex-wrap gap-8 py-4 [&_span]:text-xs [&_span]:px-12 [&_span]:py-6 [&_span]:round-8 [&_span]:border [&_span]:border-border-header">
-              <span className="bg-primary text-light">All Categories</span>
-              <span className="">Technology</span>
-              <span className="">Design</span>
-              <span className="">Business</span>
-              <span className="">Career</span>
-              <span className="">Ai</span>
-              <span className="">Programming</span>
-              <span className="">Music</span>
+              {["All Category", "Upcomming", "Most Popular", "Almost Full", "Recently Added"].map((res, idx)=>{
+                return (
+                  <span
+                    onClick={()=> {
+                      setSorted(res)
+                      setQueryParams("by", res)
+                    }}
+                    key={idx}
+                    className={`${sorted === res && "bg-primary text-light"} cursor-pointer`}
+                  >{res}</span>
+                )
+              })}
             </div>
           </div>
 
         </div>}
 
-        <CardEvents />        
+        <CardEvents
+          category={category}
+          search={search}
+          location={location}
+          sorted={sorted}
+          total = {setTotal}
+        />        
 
       </section>
 
