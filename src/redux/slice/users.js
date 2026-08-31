@@ -2,28 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import fetchData from "../../utils/helper/fetchData";
 
 const initialState  = {
-    data: [
-        {
-            "id": "1787742224923",
-            "name": "Alma'ruf Hidayat",
-            "email": "belium@cuanbot.id",
-            "password": "MTIzNDU2Nzg=",
-            "location": "Jakarta",
-            "bio": "Lead Event Coordinator di TechHub ID dengan fokus pada seminar teknologi nasional.",
-            "isAttendee": true,
-            "status": "active",
-            "profesionals": {
-                "role": "attendee",
-                "job": "Event Program Manager",
-                "office": "TechHub ID"
-            },
-            "communitys": [],
-            "events": [],
-            "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
-            "createdAt": "1787742224923",
-            "updatedAt": "1787742224923"
-        }
-    ],
+    data: [],
     isLoading: false,
     isSuccess: false,
     isError: false,
