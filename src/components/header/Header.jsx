@@ -10,26 +10,29 @@ import { useEffect, useState } from "react";
 import { GoPerson } from "react-icons/go";
 import { useEventHub } from '../../hooks/useEventHub'
 import ConfirmLogout from "../../modals/ConfirmLogout.jsx";
+import { useRedux } from "../../hooks/useRedux.jsx";
+import { getEvents } from "../../redux/slice/events.js";
 
 function Header() {
   const [confirmLogout, setConfirmLogout] = useState(false)
-  const { isDark, actived, dispatch, getAllData, data, handleFilterEvents, filtered } = useEventHub()
-  const payload = {
-    category: null,
-    community: null,
-    limit:  null,
-    events: data?.events
-  }
+  const { isDark} = useEventHub()
 
+  // New Redux
+  const {
+    dispatch,
+    auth: {
+      actived: {isActive, auth}
+    },
+    events: {data}
+  } = useRedux()
 
   useEffect(()=> {
     (()=>{
-      if(data?.events?.length < 1) {
-        dispatch(getAllData("/data/eventsData.json"))
+      if(data.length < 1) {
+        dispatch(getEvents())
       }
-      handleFilterEvents(payload)
     })()
-  }, [filtered])
+  }, [dispatch, data.length])
 
   const [showNav, setShowNav] = useState(false)
 
@@ -59,16 +62,16 @@ function Header() {
     },
     { 
       navbar: "My Events", 
-      link: `/myevents/${actived.id}`, 
+      link: `/myevents/${auth}`, 
       isDekstop: true,
-      isShow: actived.isActive,
+      isShow: isActive,
       icon: LuCalendar
     },
     { 
       navbar: "My Profile", 
-      link: `/myprofile/${actived.id}`, 
+      link: `/myprofile/${auth}`, 
       isDekstop: false,
-      isShow: actived.isActive,
+      isShow: isActive,
       icon: GoPerson
     }
   ];
