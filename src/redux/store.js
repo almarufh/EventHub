@@ -58,7 +58,7 @@ const userPersistConfig = {
 const authPersistConfig = { 
     key: "auth", 
     storage,
-    whitelist: ["data"]
+    whitelist: ["actived", "user"]
 };
 
 const store = configureStore({
