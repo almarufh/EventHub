@@ -651,8 +651,9 @@
   },
   {
     "id": "user-21",
-    "name": "Wahyu Setiawan",
-    "email": "wahyu.s@gmail.com",
+    "name": "Alma'ruf Hidayat",
+    "email": "belium@cuanbot.id",
+    "password": "MTIzNDU2Nzg=",
     "location": "Bali",
     "bio": "Junior Security Analyst yang mendalami blue teaming.",
     "isAttendee": true,
