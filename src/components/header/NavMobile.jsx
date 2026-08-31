@@ -1,16 +1,25 @@
 import { GoPerson } from 'react-icons/go'
 import { LuLogOut } from 'react-icons/lu'
 import { NavLink, useNavigate } from 'react-router'
-import { logout } from '../../redux/slice/user'
 import { RxDashboard } from 'react-icons/rx'
 import { FiShield } from 'react-icons/fi'
 import { useEventHub } from '../../hooks/useEventHub'
+import { useRedux } from '../../hooks/useRedux'
 
 function NavMobile({props, modal}) {
-    const {dispatch, isDark, actived, userExist} = useEventHub()
+    const {
+        auth: {
+            actived: {isActive, auth},
+            user: {
+                role,
+                name,
+                email
+            }
+        }
+    } = useRedux()
+    const {isDark} = useEventHub()
     const {listNavbar, setShowNav, showNav} = props
 
-    const {name, email} = userExist.data
     const navigate = useNavigate()
  
     return (
@@ -18,7 +27,7 @@ function NavMobile({props, modal}) {
         ? "" 
         : "flex flex-col"}
     `}>
-        {actived.isActive 
+        {isActive 
         ? <div className={` ${isDark 
             ? "" 
             : "flex gap-12 py-12 px-16 items-center"}
@@ -83,9 +92,9 @@ function NavMobile({props, modal}) {
                 }
             })}
 
-            { actived.role === "organizer" &&
+            { role === "organizer" &&
                 <NavLink
-                    to={`/dashboard/organizer/${actived.id}`} 
+                    to={`/dashboard/organizer/${auth}`} 
                     className={ ({isActive}) => `${isDark 
                     ? "" 
                     : "md:hidden w-full"}
@@ -101,9 +110,9 @@ function NavMobile({props, modal}) {
                 </NavLink>
             }
 
-            { actived.role === "admin" &&
+            { role === "admin" &&
                 <NavLink
-                    to={`/dashboard/admin/${actived.id}`} 
+                    to={`/dashboard/admin/${auth}`} 
                     className={ ({isActive}) => `${isDark 
                     ? "" 
                     : "md:hidden w-full"}
@@ -120,9 +129,9 @@ function NavMobile({props, modal}) {
             }
  
             <li
-                className={`${actived.isActive ? "text-font-error" : "text-primary"} flex gap-12 px-16 py-10 items-center f-14 font-bold bg-primary6 cursor-pointer`}>
-                {actived.isActive ? <LuLogOut/> : <GoPerson/>}
-                {actived.isActive 
+                className={`${isActive ? "text-font-error" : "text-primary"} flex gap-12 px-16 py-10 items-center f-14 font-bold bg-primary6 cursor-pointer`}>
+                {isActive ? <LuLogOut/> : <GoPerson/>}
+                {isActive 
                     ? <span
                         onClick={(e)=> {
                             e.stopPropagation()
