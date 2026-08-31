@@ -5,9 +5,19 @@ import { RxDashboard } from "react-icons/rx"
 import { NavLink, useNavigate } from "react-router"
 import { tglDark } from "../../redux/slice/user"
 import { useEventHub } from "../../hooks/useEventHub"
+import { useRedux } from "../../hooks/useRedux"
 
 function CreateProfile({props}) {
-    const {dispatch, isDark, actived} = useEventHub()
+    const {
+        dispatch,
+        auth: {
+            actived: {isActive, auth},
+            user: {
+                profesionals: {role}
+            }
+        }
+    } = useRedux()
+    const {isDark} = useEventHub()
 
     const {showNav, setShowNav} = props
     const navigate = useNavigate()
@@ -20,9 +30,9 @@ function CreateProfile({props}) {
             : "flex items-center w-fit h-34 gap-8 justify-end justify-self-end"}
         `}
     >
-        { actived.role === "admin" &&
+        { role === "admin" &&
             <NavLink 
-                to={`/dashboard/admin/${actived.id}`}
+                to={`/dashboard/admin/${auth}`}
                 className = {({isActive}) => `${ isDark 
                 ? "text-dark" 
                 : "hidden md:flex items-center round-8 py-6 px-12"}
@@ -38,9 +48,9 @@ function CreateProfile({props}) {
             </NavLink> 
         }
 
-        { actived.role === "organizer" &&
+        { role === "organizer" &&
             <NavLink 
-                to={`/dashboard/organizer/${actived.id}`}
+                to={`/dashboard/organizer/${auth}`}
                 className = {`${ isDark 
                 ? "text-dark" 
                 : "hidden md:flex items-center round-8 py-6 px-12 bg-primary8"}
@@ -55,9 +65,9 @@ function CreateProfile({props}) {
             </NavLink> 
         }
 
-        { actived.isActive ?
+        { isActive ?
             <NavLink 
-                to={`/notifications/${actived.id}`} 
+                to={`/notifications/${auth}`} 
                 className={({isActive}) =>`${isActive ? "bg-orange-600/8 text-orange-600" : "text-gray-700 "} 
                 relative h-34 w-34 flex items-center justify-center round-8
             `}>
@@ -67,6 +77,8 @@ function CreateProfile({props}) {
                     ? "text-dark"
                     : "text-lg"}
                 `}/>
+
+                {/* badge notificasions */}
                 {true &&<span className="absolute bottom-18 left-18 w-16 h-16 flex items-center justify-center rounded-full text-white bg-orange-600 font-bold f-9">2</span>}
             </NavLink> 
             :
@@ -105,7 +117,7 @@ function CreateProfile({props}) {
                 `}/>}
         </div>
 
-        { actived.isActive ?
+        { isActive ?
             <>
             <div className = {`${isDark
                 ? ""
