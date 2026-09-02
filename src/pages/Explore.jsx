@@ -67,7 +67,7 @@ function Explore() {
           </div>
         </div>
 
-        <CardEvents category={"Technology"} limit={6} modal={{setModalAuth}} />
+        <CardEvents category={"ctg-1"} limit={6} modal={{setModalAuth}} />
 
       </section>} 
 
