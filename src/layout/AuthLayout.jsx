@@ -7,14 +7,17 @@ import { getUsers } from '../redux/slice/users.js'
 function AuthLayout() {
   const {
     dispatch,
+    users,
     auth: {
       actived: {isActive}
     }
   } = useRedux()
 
   useEffect(()=> {
-    dispatch(getUsers())
-  },[dispatch])
+    if(users?.data?.length < 1) {
+      dispatch(getUsers())
+    }
+  },[])
 
   if (isActive) {
     return <Navigate to="/" replace />
