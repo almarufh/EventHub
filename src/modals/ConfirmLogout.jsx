@@ -1,10 +1,11 @@
 import { IoClose } from 'react-icons/io5'
 import { LuLogOut } from 'react-icons/lu'
 import { useNavigate } from 'react-router'
-import { useEventHub } from '../hooks/useEventHub'
+import { useRedux } from '../hooks/useRedux'
+import { authLogout } from '../redux/slice/auth'
 
 function ConfirmLogout({modal}) {
-  const {dispatch, handleLogout} = useEventHub()
+  const {dispatch} = useRedux()
   const navigate = useNavigate()
   return (
     <main className="inset-0 z-60 fixed h-screen w-full bg-black/10 px-36 flex items-center justify-center">
@@ -24,17 +25,16 @@ function ConfirmLogout({modal}) {
           </div>
           <div className="flex gap-8 items-center justify-between mb-12">
             <span
-                onClick={(e)=> {
-                  e.preventDefault()
+                onClick={()=> {
                   modal.setConfirmLogout(false)
-                  navigate("/auth/signin")
-                  dispatch(handleLogout())
-            }} className='px-16 f-14 text-dark font-medium py-8 round-8 bg-border-header'>Confirm</span>
+                  // navigate("/auth/signin")
+                  dispatch(authLogout())
+            }} className='px-16 f-14 text-dark font-medium py-8 round-8 bg-border-header cursor-pointer'>Confirm</span>
             <span 
               onClick={()=> {
                 modal.setConfirmLogout(false)
               }}
-              className='px-16 f-14 text-light font-medium py-8 round-8 bg-primary'>Keep Browsing</span>
+              className='px-16 f-14 text-light font-medium py-8 round-8 bg-primary cursor-pointer'>Keep Browsing</span>
           </div>
         </div>
     </main>
