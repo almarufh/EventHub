@@ -12,12 +12,12 @@ function CreateProfile({props}) {
         dispatch,
         auth: {
             actived: {isActive, auth},
-            user: {
-                profesionals: {role}
-            }
+            user
         }
     } = useRedux()
     const {isDark} = useEventHub()
+
+    const role = user?.profesionals?.role ?? null
 
     const {showNav, setShowNav} = props
     const navigate = useNavigate()
