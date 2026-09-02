@@ -6,24 +6,24 @@ const initialState = {
         auth: null
     },
     user: {
-        "id": "1787742224923",
-        "name": "Alma'ruf Hidayat",
-        "email": "gi",
-        "password": "MTIzNDU2Nzg=",
-        "location": "Jakarta",
-        "bio": "Lead Event Coordinator di TechHub ID dengan fokus pada seminar teknologi nasional.",
-        "isAttendee": true,
-        "status": "active",
-        "profesionals": {
-            "role": "attendee",
-            "job": "Event Program Manager",
-            "office": "TechHub ID"
-        },
-        "communitys": [],
-        "events": [],
-        "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
-        "createdAt": "1787742224923",
-        "updatedAt": "1787742224923"
+        // "id": "1787742224923",
+        // "name": "Alma'ruf Hidayat",
+        // "email": "gi",
+        // "password": "MTIzNDU2Nzg=",
+        // "location": "Jakarta",
+        // "bio": "Lead Event Coordinator di TechHub ID dengan fokus pada seminar teknologi nasional.",
+        // "isAttendee": true,
+        // "status": "active",
+        // "profesionals": {
+        //     "role": "attendee",
+        //     "job": "Event Program Manager",
+        //     "office": "TechHub ID"
+        // },
+        // "communitys": [],
+        // "events": [],
+        // "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        // "createdAt": "1787742224923",
+        // "updatedAt": "1787742224923"
     },
     isLoading: false,
     isSuccess: false,
@@ -40,9 +40,11 @@ export const authLogin = createAsyncThunk(
             console.log(users)
             const user = users.find((e)=> e.email === payload.email)
             if(!user) {
-                return rejectWithValue("Email atau password salah!")
+                return rejectWithValue("Email salah!")
             }
-            if(user.password !== btoa(payload.password)) {
+            console.log(user.password, btoa(payload.password))
+            // if(user.password !== btoa(payload.password)) {
+            if(user.password !== payload.password) {
                 return rejectWithValue(`Email atau password salah!`)
             }
             return user
@@ -56,7 +58,7 @@ export const authLogout = createAsyncThunk(
     "authLogout",
     async (_, {getState, rejectWithValue}) => {
         try {
-            const state = getState
+            const state = getState()
             const user = state.auth.isActive
             return user
         } catch (error) {
