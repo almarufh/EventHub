@@ -21,12 +21,56 @@ export const getUsers = createAsyncThunk(
     }
 )
 
+export const createUser = createAsyncThunk(
+    "createRegister",
+    async (payload, {getState, rejectWithValue}) => {
+        try {
+            const state = getState()
+            const users = state.users.data
+            let user = users.find((e)=> e.email === payload.email)
+            if(user) {
+                return rejectWithValue("Email sudah tersedia !")
+            }
+            user = {
+                ...payload,
+                id: `user-${users.length + 1}`,
+                createdAt: `${Date.now()}`,
+                updatedAt: `${Date.now()}`
+            }
+            return new Promise(user)
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
 const users = createSlice({
     name: "users",
     initialState,
-    reducers: {},
+    reducers: {
+        delMessage: (prevState) => {
+            prevState.message = null
+            prevState.isError = false;
+        },
+        checkEmail: (state, {payload}) => {
+            const user = state.data.find((e) => e.email === payload.toLowerCase())
+            if (!user) {
+            state.isPending = false;
+            state.isSuccess = false;
+            state.isError = true;
+            state.message = `${payload} belum terdaftar !`;
+            return
+            }
+
+            state.isPending = false;
+            state.isSuccess = true;
+            state.isError = false;
+            state.message = `${payload} sudah terdaftar !`;
+        }
+    },
     extraReducers: (builder) => {
         builder
+        // Load users
         .addCase(getUsers.pending, (state) => {
             state.isPending = true;
             state.isSuccess = false;
@@ -41,11 +85,34 @@ const users = createSlice({
             state.data = payload
         })
         .addCase(getUsers.rejected, (state) => {
-            state.data.isPending = false;
-            state.data.isError = true;
-            state.data.message = "failed load users !";
+            state.isPending = false;
+            state.isError = true;
+            state.message = "failed load users !";
+        })
+        // Create USer
+        .addCase(createUser.pending, (state) => {
+            state.isPending = true;
+            state.isSuccess = false;
+            state.isError = false;
+            state.message = null;
+        })
+        .addCase(createUser.fulfilled, (state, {payload}) => {
+            state.isPending = false;
+            state.isSuccess = true;
+            state.message = "success create user !";
+            state.data.push(payload)
+        })
+        .addCase(createUser.rejected, (state, {payload}) => {
+            state.isPending = false;
+            state.isError = true;
+            state.message = payload || "failed create user !";
         });
     }
 })
+
+export const {
+    delMessage,
+    checkEmail
+} = users.actions
 
 export default users.reducer
