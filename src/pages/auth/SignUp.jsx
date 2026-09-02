@@ -4,16 +4,14 @@ import { Link, useNavigate } from 'react-router'
 import { LuEye, LuEyeClosed } from 'react-icons/lu'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useStore } from 'react-redux'
-import { checkEmail, registerUser } from '../../redux/slice/user.js'
+import { createUser, delMessage } from '../../redux/slice/users.js'
+import { useRedux } from '../../hooks/useRedux.jsx'
 
 function SignUp() {
   // Redux Persist
-  const dispatch = useDispatch()
-  const store = useStore()
-
+  const {dispatch, users, state} = useRedux()
   // state
-  const {register, handleSubmit, formState: { errors }} = useForm({mode: "onBlur"})
+  const {register, handleSubmit, formState: { errors }} = useForm()
   const [show, setShow] = useState({
     password: {
       value: false,
@@ -46,36 +44,58 @@ function SignUp() {
   };
 
   const navigate = useNavigate()
-  function saveUser(e) {
-    
-    let user = {
-        id: `${Date.now()}`,
-        email: e.email.toLowerCase(),
+  async function saveUser(e) {
+    try {
+      let user = {
         name: e.name,
-        password: atob(e.password),
-        role: "attendee"
+        email: e.email.toLowerCase(),
+        password: e.password,
+        // password: atob(e.password),
+        location: null,
+        bio: null,
+        isAttendee: true,
+        status: "active",
+        profesionals: {
+            role: "attendee",
+            job: null,
+            office: null
+        },
+        communitys: [],
+        events: [],
+        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+      }
+  
+      // check admin
+      const admin = JSON.parse(import.meta.env.VITE_ADMIN)
+      admin.forEach(a => {
+          if(a === user.email) {
+              user.profesionals.role = "admin"
+          }
+      });    
+      
+      // check admin
+      const organizer = JSON.parse(import.meta.env.VITE_ORGANIZER)
+      organizer.forEach(a => {
+          if(a === user.email) {
+              user.profesionals.role = "organizer"
+          }
+      });
+      
+      await dispatch(createUser(user)).unwrap()
+
+      if (state.getState().users.isSuccess) {
+        navigate("/auth/signin")
+      }
+  
+    } catch (error) {
+      console.log(error)
     }
-
-    // check admin
-    const admin = JSON.parse(import.meta.env.VITE_ADMIN)
-    admin.forEach(a => {
-        if(a === user.email) {
-            user.role = "admin"
-        }
-    });    
-    
-    // check admin
-    const organizer = JSON.parse(import.meta.env.VITE_ORGANIZER)
-    organizer.forEach(a => {
-        if(a === user.email) {
-            user.role = "organizer"
-        }
-    });
-
-    dispatch(registerUser(user))
-
-    navigate("/auth/signin")
   }
+
+  const deletMessage = () => {
+    dispatch(delMessage())
+  }
+
   return (
     <div className='w-full h-screen flex justify-center items-center'>
       <div className="w-8/10 md:w-6/10">
@@ -118,13 +138,14 @@ function SignUp() {
               htmlFor="name"
             >Full Name</label>
             <input 
+              onFocus={deletMessage}
               className='bg-light rounded-lg border border-border-header py-10 px-12 f-14 text-font-secondary outline-none'
               type="text" 
               {...register("name", { required: "Full name is required" })} 
               id="name" 
               placeholder="Alex Kim" 
             />
-            <span className={`transition-opacity duration-200 ${errors.name ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.name?.message || "error"}</span>
+            <span className={`transition-opacity duration-200 ${errors.name ? "opacity-100" : "opacity-0"} text-font-error text-xs`}>{errors.name?.message}</span>
           </div>
 
           <div className='flex flex-col gap-6 py-12'>
@@ -133,6 +154,7 @@ function SignUp() {
               htmlFor="email"
             >Email address</label>
             <input 
+              onFocus={deletMessage}
               className='bg-light rounded-lg border border-border-header py-10 px-12 f-14 text-font-secondary outline-none'
               type="email" 
               {...register("email", { 
@@ -140,13 +162,6 @@ function SignUp() {
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: "Format email tidak valid"
-                },
-                validate: (value)=> {
-                  dispatch(checkEmail(value))
-                  const { isExist: exist, message: getMessage } = store.getState().eventHub.userExist
-                  if(exist){
-                    return getMessage
-                  }
                 }
               })} 
               id="email" 
@@ -162,6 +177,7 @@ function SignUp() {
             >Password</label>
             <div className="flex border rounded-lg px-12 border-border-header items-center justify-between">
               <input
+                onFocus={deletMessage}
                 className='bg-light py-10 f-14 text-font-secondary w-full outline-none'
                 type={show.password.type}
                 {...register("password", {required: "Password is required", minLength:{
@@ -186,10 +202,10 @@ function SignUp() {
             >Confirm Password</label>
             <div className="flex border rounded-lg px-12 border-border-header items-center justify-between">
               <input
+                onFocus={deletMessage}
                 className='bg-light py-10 f-14 text-font-secondary w-full outline-none'
                 type={show.confirm.type}
                 {...register("confirm", {
-                  required: "please confirm your passsword",
                   validate: (value, formValues) => value === formValues.password || "Password do not match"
                 })}
                 id="confirm"
@@ -216,8 +232,9 @@ function SignUp() {
             >I agree to the <span className="text-xs text-primary">Terms of Service</span> and Privacy <span className="text-xs text-primary">Policy</span></label>
           </div>
           
-          <div className="pb-12">
-            <span className={`${errors?.accept ? "opacity-100" : "opacity-0"} text-font-error text-xs pb-12`}>{errors.accept?.message || "error"}</span>
+          <div className='mt-2 min-h-28'>
+            {errors?.accept && <span className={`${errors?.accept ? "opacity-100" : "opacity-0"} text-font-error text-xs flex`}>{errors.accept?.message || "error"}</span>}
+            {users.isError && <span className={`${users.isError ? "opacity-100" : "opacity-0"} text-font-error text-xs flex justify-center mb-2`}>{users?.message || "error"}</span>}
           </div>
 
           
