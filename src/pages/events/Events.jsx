@@ -33,6 +33,29 @@ function Events() {
     })
   }
 
+  // function FormEmail() {
+  // const dispatch = useDispatch();
+  // const { register, formState: { errors } } = useForm({ mode: "onChange" });
+  // const debouncedCheckEmail = useMemo(
+  //   () =>
+  //     debounce(async (value, resolve) => {
+  //       try {
+  //         await dispatch(checkEmail(value)).unwrap();
+  //         resolve(true); // Validasi sukses
+  //       } catch (errorMessage) {
+  //         resolve(errorMessage || "Email sudah terdaftar!"); // Validasi gagal
+  //       }
+  //     }, 500), // Tunggu 500ms setelah jeda mengetik
+  //   [dispatch]
+  // );
+
+  // 2. Bersihkan timer debounce ketika komponen unmount untuk mencegah memory leak
+  useEffect(() => {
+    return () => {
+      debouncedCheckEmail.cancel();
+    };
+  }, [debouncedCheckEmail]);
+
   return (
     <main className='flex flex-col items-center pt-16'>
       <section className='w-full flex justify-center  border-b pb-16 border-border-header'>
